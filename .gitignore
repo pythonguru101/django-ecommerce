@@ -1,0 +1,12 @@
+.idea/
+*.pyc
+__pycache__/
+logs/
+*.sql
+*.pid
+*.sqlite3
+*.sh
+*.map
+temp/
+media/
+static/
