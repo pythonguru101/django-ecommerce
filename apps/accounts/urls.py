@@ -3,7 +3,6 @@ from django.urls import path, re_path
 
 from apps.accounts.views import ConfirmView
 
-
 app_name = 'apps.accounts'
 
 urlpatterns = [
