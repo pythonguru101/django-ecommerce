@@ -1,0 +1,31 @@
+#!/bin/bash
+
+NAME=powerballs # Name of the application
+VENV=/opt/venv/PB_env
+DJANGODIR=/opt/webapps/powerballs # Django project directory
+SOCKFILE=$DJANGODIR/run/gunicorn.sock # We will communicte using this unix socket
+USER=www-data # The user to run as
+NUM_WORKERS=3 # How many worker processes should
+Gunicorn spawn
+DJANGO_SETTINGS_MODULE=config.settings.prod # Which settings file should Django use
+DJANGO_WSGI_MODULE=config.wsgi # WSGI module name
+
+cd $DJANGODIR
+export DJANGO_SETTINGS_MODULE=$DJANGO_SETTINGS_MODULE
+
+# Create the run directory if it doesn't exist
+RUNDIR=$(dirname $SOCKFILE)
+test -d $RUNDIR || mkdir -p $RUNDIR
+
+# Create the log directory if it doesn't exist
+LOGDIR=$DJANGODIR/logs
+test -d $LOGDIR || mkdir -p $LOGDIR
+
+# Start your Django Unicorn
+exec $VENV/bin/gunicorn ${DJANGO_WSGI_MODULE}:application \
+  --name $NAME \
+  --workers $NUM_WORKERS \
+  --user=$USER \
+  --bind=unix:$SOCKFILE \
+  --log-level=debug \
+  --log-file=-
