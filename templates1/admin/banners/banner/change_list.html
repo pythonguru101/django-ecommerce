@@ -1,0 +1,33 @@
+{% extends "admin/change_list.html" %}
+{% load i18n admin_static admin_list %}
+{% load admin_urls %}
+
+
+{% block object-tools %}
+    <ul class="object-tools">
+        {% if has_add_permission %}
+            {% block object-tools-items %}
+                <li>
+                    <a href="{% url cl.opts|admin_urlname:'add' %}{% if is_popup %}?_popup=1{% endif %}" class="addlink">
+                        {% blocktrans with cl.opts.verbose_name as name %}Add {{ name }}{% endblocktrans %}
+                    </a>
+                </li>
+            {% endblock %}
+        {% endif %}
+        <li>
+            <a href="{% url 'admin:banners_bannertext_add' %}{% if is_popup %}?_popup=1{% endif %}" class="addlink">
+              {% blocktrans with "банер с текстом" as name %}Add {{ name }}{% endblocktrans %}
+            </a>
+        </li>
+        <li>
+            <a href="{% url 'admin:banners_bannerproduct_add' %}{% if is_popup %}?_popup=1{% endif %}" class="addlink">
+              {% blocktrans with "банер с товаром" as name %}Add {{ name }}{% endblocktrans %}
+            </a>
+        </li>
+        <li>
+            <a href="{% url 'admin:banners_bannerimage_add' %}{% if is_popup %}?_popup=1{% endif %}" class="addlink">
+              {% blocktrans with "банер с картинкой" as name %}Add {{ name }}{% endblocktrans %}
+            </a>
+        </li>
+    </ul>
+{% endblock %}

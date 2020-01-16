@@ -1,0 +1,57 @@
+{% spaceless %}
+<?xml version="1.0" encoding="windows-1251"?>
+<!DOCTYPE yml_catalog SYSTEM "shops.dtd">
+<yml_catalog date="{%now "Y-m-d H:i" %}">
+    <shop>
+        <name>{{ app.yml_name }}</name>
+        <company>{{ app.yml_company }}</company>
+        <url>http://{{ site.domain }}</url>
+        <platform>Django-plugshop</platform>
+        <version>0.4.0.2</version>
+        <agency>Kitty Hug</agency>
+        <email>{{ app.yml_email }}</email>
+        
+        <currencies>
+            <currency id="RUR" rate="1"/>
+        </currencies>
+        
+        <categories>
+            {% for category in categories %}
+                <category id="{{ category.pk }}">{{ category.name }}</category>
+            {% endfor %}
+        </categories>
+        
+        <local_delivery_cost>{{ shipping.price }}</local_delivery_cost>
+        
+        <offers>
+            {% for p in offers %}
+            <offer id="{{ p.pk }}" type="vendor.model" available="{{ p.is_active|yesno:"true,false" }}">
+                <url>http://{{ site.domain }}{{ p.get_absolute_url }}</url>
+                <price>{{ p.price }}</price>
+                <currencyId>RUR</currencyId>
+                <categoryId>{{ p.category.id }}</categoryId>
+                {# <market_category></market_category> #}
+                {% with p.get_cover as picture %}
+                    {% if picture %}
+                    <picture>http://{{ site.domain }}{{ picture.image_banner.url }}</picture>
+                    {% endif %}
+                {% endwith %}
+                <store>false</store>
+                <pickup>false</pickup>
+                <delivery>true</delivery>
+                <local_delivery_cost>{{ shipping.price }}</local_delivery_cost>
+                {# <typePrefix></typePrefix> #}
+                <vendor>RPM Sports Limited</vendor>
+                {# <vendorCode></vendorCode> #}
+                <model>{{ p.name }}</model>
+                <description>{{ p.description|striptags }}</description>
+                {# <sales_notes></sales_notes> #}
+                {# <manufacturer_warranty></manufacturer_warranty> #}
+                <seller_warranty>true</seller_warranty>
+                <country_of_origin>Ирландия</country_of_origin>
+            </offer>
+            {% endfor %}
+        </offers>
+    </shop>
+</yml_catalog>
+{% endspaceless %}

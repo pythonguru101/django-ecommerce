@@ -1,0 +1,39 @@
+{% extends 'layout.html' %}
+{% load powerball_tags %}
+
+{% block feeds %}
+<link rel="alternate" type="application/rss+xml" title="Powerball.ru feed" href="{% url feed %}">
+{% endblock %}
+
+{% block navigation_menu %}
+<ul>
+    {% spaceless %}
+    <li class="page-navigation__item page-navigation__item_first{% active_tag request "/shop/categories/" "page-navigation__item_s" %}">
+        <a href="{% url plugshop-caterory-list %}">Модели</a>
+    </li>
+    <li class="page-navigation__item{% active_tag request "/achievements/" "page-navigation__item_s" %}">
+        <a href="{% url achievements-categories %}">Рекорды</a>
+    </li>
+    <li class="page-navigation__item{% active_tag request "/dealers/" "page-navigation__item_s" %}">
+        <a href="{% url dealers %}">Где купить</a>
+    </li>
+    <li class="page-navigation__item page-navigation__item_last{% active_tag request "/blog/" "page-navigation__item_s" %}">
+        <a href="{% url blog-list %}">Блог</a>
+    </li>
+    {% endspaceless %}
+</ul>
+{% endblock %}
+
+{% block google_analytics %}
+    <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-301604-1']);
+        _gaq.push(['_trackPageview']);
+        {% block google_analytics_inner %}{% endblock %}
+        (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+    </script>
+{% endblock %}

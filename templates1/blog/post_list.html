@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load powerball_tags %}
+
+{% load pytils_dt %}
+{% load pytils_numeral %}
+
+{% block title %}{{app.title_blog}}{% endblock %}
+{% block content %}
+    <div class="container">
+        {% spaceless %}
+        <section class="blog-list">
+            {% block blog_content %}
+                {% for p in posts %}
+                <article class="blog-list__item">
+                    <div class="blog-list__item-date">{{p.publish_date|ru_strftime:"%d %B %Y, %A"}}</div>
+                    <h2 class="blog-list__item-title">
+                        <a href="{{ p.get_absolute_url }}">{{p.title}}</a>
+                    </h2>
+                    <div class="blog-list__item-teaser">{{p.text|more|safe}}</div>
+                    <hr>
+                </article>
+                {% endfor %}
+            {% endblock %}
+        </section>
+
+        <aside class="blog-sidebar">
+            <div class="block-social"></div>
+        </aside>
+        {% endspaceless %}
+        
+        {% if paginator.num_pages > 1 %}
+        {% spaceless %}
+            <div class="blog-pagination">
+               <ul>
+                   {% for num in paginator.page_range %}
+                       <li>
+                           {% ifequal num page_obj.number %}
+                               <a class="selected" title="">{{num}}</a>
+                           {% else %}
+                               <a href="{% url 'blog-list' %}?page={{num}}">{{num}}</a>
+                           {% endifequal %}
+                       </li>
+                   {% endfor %}
+               </ul>
+            </div>
+        {% endspaceless %}
+        {% endif %}
+    </div>
+{% endblock %}
