@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% load static from staticfiles %}
+{% load powerball_tags %}
+{% load plugshop %}
+{% load pytils_numeral %}
+
+{% block meta_keywords %}
+    {% if product.meta_keywords %}{{product.meta_keywords}}{% else %}{{block.super}}{% endif %}
+{% endblock %}
+
+{% block meta_description %}
+    {% if product.meta_description %}{{product.meta_description}}{% else %}
+        {% with product.description|cut:"#more"|striptags|truncatewords:20 as desc  %}
+            {% if desc %}{{desc}}{% else %}{{block.super}}{% endif %}
+        {% endwith %}
+    {% endif %}
+{% endblock %}
+
+{% block title %}
+    {% if product.meta_title %}{{product.meta_title}}{% else %}
+        {% if product.name %}{{product.name}}{% else %}{{block.super}}{% endif %}
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <section class="container product-page">
+    {% spaceless %}
+        <section class="product">
+            <div class="product-box">
+                <h1 class="product__name">{{product.name}}</h1>
+                <form action="{% url 'plugshop-cart' %}" class="cart__goods__form" method="post">
+                    {% csrf_token %}
+                    {% plugshop_action product "add" %}
+
+                    <div class="button button-blue" data-cart-type="button" data-cart-id="{{product.id}}">
+                        <div class="button_l">
+                            <input class="button__submit" type="submit" value="Купить за {{ product.price|plugshop_currency }} {{ product.price|choose_plural:"рубль,рубля,рублей" }}">
+                        </div>
+                        <div class="button_r"></div>
+                    </div>
+                </form>
+
+            </div>
+
+            <div class="product-box">
+
+                <div class="product-box__l">
+                    <div class="product-pic">
+                        {% with product.get_cover as img %}
+                            <img src="{{img.image_product.url}}" width="{{img.image_product.width}}" height="{{img.image_product.height}}" alt="{{product.name}}">
+                        {% endwith %}
+                    </div>
+                </div>
+
+                {% with product.has_video as has_video %}
+                    <div class="product-box__r">
+                        <div class="tabs">
+                            <div class="tabs__up">
+                                {% spaceless %}
+                                <ul>
+                                    <li class="tabs__tab tabs__tab_s" data-tab-id="1">
+                                        <a class="tab__button round-button" title="">
+                                            <span class="icon icon__list"></span>
+                                        </a>
+                                    </li>
+                                    {% if has_video %}
+                                    <li class="tabs__tab" data-tab-id="2">
+                                        <a class="tab__button round-button" title="">
+                                            <span class="icon icon__play"></span>
+                                        </a>
+                                    </li>
+                                    {% endif %}
+                                </ul>
+                                {% endspaceless %}
+                            </div>
+                            <div class="tabs__down">
+                                <ul>
+                                    <li class="tabs__content" data-tab-id="1">
+                                        <div class="product__desc">
+                                            {{product.description|safe}}
+                                        </div>
+                                    </li>
+                                    {% if has_video %}
+                                    <li class="tabs__content" data-tab-id="2" style="display: none">
+                                        <div class="product__video">
+                                            {{product.videos.all.0.embeded|safe}}
+                                        </div>
+                                    </li>
+                                    {% endif %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                {% endwith %}
+            </div>
+
+        </section>
+    {% endspaceless %}
+    </section>
+{% endblock %}

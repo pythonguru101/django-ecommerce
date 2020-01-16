@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block content %}
+
+{% spaceless %}
+{% if is_confirmed %}
+    <section class="container cart-element">
+        <h1>Ваш email успешно подтверждён</h1>
+    </section>
+{% else %}
+<form action="{% url 'account-confirm' registration.activation_key %}" method="post" class="cart__form" enctype="multipart/form-data">{% csrf_token %}
+    <section class="container cart-element">
+        <h1>Регистрация</h1>
+        <div class="product-box">
+            <div class="cart-box">
+                <div>
+                    <dl class="cart__form-element">
+                        {% include "forms/password.html" with field=form.password1 name="password1" prefix="account" label="Пароль" only %}
+                    </dl>
+                </div>
+
+                <div>
+                    <dl class="cart__form-element">
+                        {% include "forms/password.html" with field=form.password2 name="password2" prefix="account" label="Повторите пароль" only %}
+                    </dl>
+                </div>
+
+                <div>
+                    <dl class="cart__form-element">
+                        <div class="button button-blue">
+                            <div class="button_l">
+                                <input class="button__submit" type="submit" value="Зарегестрироваться">
+                            </div>
+                            <div class="button_r"></div>
+                        </div>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </section>
+</form>
+{% endif %}
+{% endspaceless %}
+{% endblock content %}

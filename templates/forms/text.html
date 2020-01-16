@@ -1,0 +1,17 @@
+<dt>
+    <label class="form-label{% if field.errors %} form-error{% endif %}" for="{{prefix}}_{{name}}">{{label}}</label>
+</dt>
+<dd>
+    {% if textarea %}
+        <textarea name="{{name}}" class="form-textarea {% if field.errors %} form-error{% endif %}" id="{{prefix}}_{{name}}">{{field.value|default:""}}</textarea>
+    {% else %}
+        <input type="text" name="{{name}}" class="form-text cart__form-text{% if field.errors %} form-error{% endif %}" id="{{prefix}}_{{name}}" value="{{field.value|default:""}}">
+    {% endif %}
+</dd>
+{% if field.errors %}
+<dd>
+    <ul class="form-error-list">
+    {% for err in field.errors %}<li>{{err}}</li>{% endfor %}
+    </ul>
+</dd>
+{% endif %}

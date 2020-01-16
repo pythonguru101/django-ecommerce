@@ -1,0 +1,17 @@
+<dt>
+    <label class="form-label{% if field.errors %} form-error{% endif %}" for="{{prefix}}_{{name}}">{{label}}</label>
+</dt>
+<dd>
+    <select name="{{name}}" class="cart__form-select" id="{{prefix}}_{{name}}">
+    {% for opt in queryset  %}
+        <option value="{{opt.id}}" {% if field.value|slugify == opt.id|slugify %} selected{% endif %}>{{opt.name}}</option>
+    {% endfor %}                            
+    </select>
+</dd>
+{% if field.errors %}
+<dd>
+    <ul class="form-error-list">
+    {% for err in field.errors %}<li>{{err}}</li>{% endfor %}
+    </ul>
+</dd>
+{% endif %}

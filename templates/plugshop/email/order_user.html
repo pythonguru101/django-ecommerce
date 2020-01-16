@@ -1,0 +1,51 @@
+{% extends 'plugshop/email/order.html' %}
+{% load plugshop %}
+{% load pytils_numeral %}
+
+{% block header %}
+    <h1>Спасибо за заказ</h1>
+    <h2>Номер заказа – <b>{{order.number}}</b></h2>
+{% endblock %}
+
+{% block goods_head %}
+<tr>
+    <th>Товар</th>
+    <th>Цена</th>
+    <th>Количество</th>
+    <th>Итог</th>
+</tr>
+{% endblock goods_head %}
+
+{% block goods_body %}
+    {% for item in cart %}
+        <tr>
+            <td>{{item.product.name}}</td>
+            <td>{{item.product.price}}</td>
+            <td>{{item.quantity}} {{item.quantity|choose_plural:"штука,штуки,штук"}}</td>
+            <td>{{item.price_total|plugshop_currency}} {{item.price_total|choose_plural:"рубль,рубля,рублей"}}</td>
+        </tr>
+    {% endfor %}
+{% endblock goods_body %}
+
+{% block goods %}
+    <h3>Вы заказали:</h3>
+    {{ block.super }}
+{% endblock goods %}
+
+{% block user %}{% endblock %}
+
+{% block content %}
+    <h2>Доставка</h2>
+    <div>
+        <p>{{order.shipping_type.name}}</p>
+        {% if order.shipping_type.require_zip_code %}
+            <p>город: <b>{{order.city}}</b></p>
+            <p>индекс: <b>{{order.zip_code}}</b></p>
+        {% endif %}
+        {% if order.shipping_type.require_address %}
+            <p>адрес: <b>{{order.address}}</b></p>
+        {% endif %}
+        <p>цена: <b>{{order.shipping_type.price|plugshop_currency}}</b> {{order.shipping_type.price|choose_plural:"рубль,рубля,рублей"}}</p>
+    </div>
+    <h2>Итого: {{order.price_total|plugshop_currency}} {{order.price_total|choose_plural:"рубль,рубля,рублей"}}</h2>
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{#{% load markup %}#}
+
+{% block content %}
+<section class="container">
+    <ul class="category__list">
+        {% for category in categories %}
+        <li class="category__list-el">
+            <div class="category">
+                {% spaceless %}
+                <div class="category__pic">
+                    {% with category.get_first_product as product %}
+                        {% if product %}
+                            {% with product.get_cover as img %}
+                                <a href="{{category.get_absolute_url}}">
+                                    <img src="{{img.image_category.url}}" width="{{img.image_category.width}}" height="{{img.image_category.height}}" alt="{{product.name}}">
+                                    <div class="product__shadow"></div>
+                                </a>
+                            {% endwith %}
+                        {% endif %}
+                    {% endwith %}
+                </div>
+                <div class="category__body">
+                    <h2 class="category__header">
+                        <a href="{{ category.get_absolute_url }}">{{category.name}}</a>
+                    </h2>
+                    <div class="category__desc">
+                        {{category.short_description|safe}}
+                    </div>
+                </div>
+                {% endspaceless %}
+            </div>
+            <hr>
+        </li>
+        {% endfor %}
+    </ul>
+</section>
+{% endblock %}

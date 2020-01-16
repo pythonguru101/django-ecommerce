@@ -1,0 +1,108 @@
+{% load static %}
+{% spaceless %}
+
+  <!DOCTYPE html>
+  <!--[if lt IE 7]><html class="ie ie6 lte9 lte8 lte7" lang="ru"><![endif]-->
+  <!--[if IE 7]><html class="ie ie7 lte9 lte8 lte7" lang="ru"><![endif]-->
+  <!--[if IE 8]><html class="ie ie8 lte9 lte8" lang="ru"><![endif]-->
+  <!--[if IE 9]><html class="ie ie9 lte9" lang="ru"><![endif]-->
+  <!--[if gt IE 9]><html lang="ru"><![endif]--><!--[if !IE]><!-->
+  <html lang="ru"><!--<![endif]-->
+  <head>
+    <meta charset="utf-8">
+    <title>{% spaceless %}{% block title %}{{ app.title_page }}{% endblock %}{% endspaceless %}</title>
+    <meta name="Keywords"
+          content="{% spaceless %}{% block meta_keywords %}{{ app.meta_keywords }}{% endblock %}{% endspaceless %}">
+    <meta name="Description" content="
+        {% spaceless %}{% block meta_description %}{{ app.meta_description }}{% endblock %}{% endspaceless %}">
+    Your order can be shipped today.
+    {# <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no, width=device-width"> #}
+    <meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no, width=device-width">
+    <meta name="yandex-verification" content="{{ app.yandex_verification }}">
+    {% block feeds %}{% endblock %}
+    <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link rel="stylesheet" href="{% static 'stylesheets/screen.css' %}">
+    <link rel="stylesheet" href="{% static 'stylesheets/mobile.css' %}">
+
+    <script src="{% static 'javascripts/vendor.js' %}"></script>
+    <script src="{% static 'javascripts/vendor/jquery-1.9.1.min.js' %}"></script>
+    <script src="{% static 'javascripts/vendor/jquery.cookie.js' %}"></script>
+    <script src="{% static 'javascripts/vendor/jquery.sticky.js' %}"></script>
+
+    <script src="{% static 'javascripts/app.js' %}"></script>
+
+    {% block js_include %}{% endblock %}
+  </head>
+  <body class="body{% block body_class %}{% endblock %}">
+  {% block substrate %}{% endblock %}
+  <div class="page">
+    {% block header %}
+      <header class="page-header">
+        <div class="container">
+          <a href="/" class="page-logo"></a>
+          <span class="page-phone">{{ app.phone }}</span>
+          <div class="page-cart">
+            {% block header_cart %}
+              {% include "plugshop/_header_cart.html" with cart_button=1 %}
+            {% endblock %}
+          </div>
+        </div>
+      </header>
+    {% endblock %}
+
+    {% block navigation %}
+      <nav class="page-navigation">
+        <div class="container clear">
+          {% block navigation_menu %}{% endblock %}
+          <div class="page-navigation__right">
+            {% block navigation_right %}{% endblock %}
+          </div>
+        </div>
+      </nav>
+    {% endblock %}
+
+    <div class="page-content" role="main">
+      {% block banner %}
+        {% if banner %}
+          <section class="container">
+            {% include banner.template with banner=banner %}
+          </section>
+        {% endif %}
+      {% endblock %}
+      {% block content %}{% endblock %}
+    </div>
+    <div class="page-footer__push"></div>
+  </div>
+
+  {% block footer %}
+    <footer class="page-footer">
+      <section class="container">
+        <div class="copyright-disclaimer">
+          <p>На нашем сайте вы можете купить тренажёр кисти NSD PowerBall с доставкой по Москве и Санкт-Петербургу и
+            всей России!</p>
+        </div>
+        <div class="copyright-text">
+          <p>© 2005-{% now "Y" %} Интернет-представительство Powerball.ru, {{ app.email }}.</p>
+          <p>Все товары сертифицированы, использование текстов, графики и видео с сайта запрещено без разрешения ООО
+            «Гросс-Снаб».</p>
+          <p>Доставка и управление магазином осуществляется ООО «Удивительные Подарки».</p>
+        </div>
+        <div class="copyright-label">Сайт сделан в студии <a href="http://kittyhug.ru/">Kitty Hug</a></div>
+      </section>
+    </footer>
+  {% endblock footer %}
+  {# {% if messages|length %} #}
+  {#     <div class="messages"> #}
+  {#         {% for message in messages %} #}
+  {#             <div class="message message-info">{{message}}</div> #}
+  {#         {% endfor %} #}
+  {#     </div> #}
+  {# {% endif %} #}
+  {% if not debug %}
+    {% block google_analytics %}{% endblock %}
+  {% endif %}
+  </body>
+  </html>
+{% endspaceless %}

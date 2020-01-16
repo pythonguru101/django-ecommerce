@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% block content %}
+
+{% spaceless %}
+{% if category %}
+    <form action="{% url 'achievements-record-cat-new' category.slug %}" method="post" class="cart__form" enctype="multipart/form-data">{% csrf_token %}
+{% else %}
+    <form action="{% url 'achievements-record-new' %}" method="post" class="cart__form" enctype="multipart/form-data">{% csrf_token %}
+{% endif %}
+    <section class="container cart-element">
+        <h1>Ваш рекорд</h1>
+        <div class="product-box">
+            <div class="cart-box">
+                <div>
+                    <dl class="cart__form-element">
+                        {% include "forms/text.html" with field=form.value prefix="record" name="value" label="Количество оборотов" only %}
+                    </dl>
+                    <dl class="cart__form-element">
+                        {% if category %}
+                            <dt><label class="form-label" for="record_category">Тип соревнования</label></dt>
+                            <dd>
+                                <select name="category" class="cart__form-select" id="record_category">
+                                    <option value="{{category.id}}" selected>{{category.name}}</option>
+                                </select>
+                            </dd>
+                        {% else %}
+                            {% include "forms/select.html" with field=form.category queryset=form.fields.category.queryset.all prefix="record" name="category" label="Тип соревнования" only %}
+                        {% endif %}
+                    </dl>
+                    <dl class="cart__form-element">
+                        {% include "forms/select.html" with field=form.powerball queryset=form.fields.powerball.queryset.all prefix="record" name="powerball" label="Модель" only %}
+                    </dl>
+                </div>
+
+                <div>
+                    <dl class="cart__form-element">
+                        {% include "forms/text.html" with field=form.name name="name" prefix="record" label="Имя" only %}
+                    </dl>
+
+                    <dl class="cart__form-element">
+                        {% include "forms/text.html" with field=form.email name="email" prefix="record" label="Email" only %}
+                    </dl>
+                    
+                    <dl class="cart__form-element">
+                        {% include "forms/text.html" with field=form.comment name="comment" prefix="record" label="Комментарий" textarea=1 only %}
+                    </dl>                    
+                </div>
+                
+                <div>
+                    <div class="cart__form-element">&nbsp;</div>
+                    <div class="cart__form-element">
+                        <dt>
+                            <label class="form-label{% if form.image.errors %} form-error{% endif %}" for="record_image">Фотография с рекордом</label>
+                        </dt>
+                        <dd>
+                            <input type="file" name="image" id="record_image">
+                        </dd>
+                        {% if form.image.errors %}
+                        <dd>
+                            <ul class="form-error-list">
+                            {% for err in form.image.errors %}<li>{{err}}</li>{% endfor %}
+                            </ul>
+                        </dd>
+                        {% endif %}
+                    </div>
+                    <dl class="cart__form-element last">
+                        <div class="button button-blue">
+                            <div class="button_l">
+                                <input class="button__submit" type="submit" value="Добавить рекорд">
+                            </div>
+                            <div class="button_r"></div>
+                        </div>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </section>
+</form>
+{% endspaceless %}
+{% endblock content %}

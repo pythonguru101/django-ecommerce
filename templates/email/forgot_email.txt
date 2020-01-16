@@ -1,0 +1,1 @@
+Для восстановления пароля на сайте {{site.name}} пройдите по ссылке: http://{{site.domain}}/users/confirm/{{activation_key}}

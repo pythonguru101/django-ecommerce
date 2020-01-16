@@ -1,0 +1,47 @@
+{% load plugshop %}
+
+{% load pytils_numeral %}
+
+<section class="container">
+    <div class="product-banner">
+        {% spaceless %}
+        <div class="product-banner_l">
+            <section class="product">
+                <h1 class="product__name">{{banner.name}}</h1>
+                <div class="product__desc">{{banner.text|safe}}</div>
+                <div class="product__buttons">
+                    <form action="{% url 'plugshop-cart' %}" class="cart__goods__form" method="post">
+                        {% csrf_token %}
+                        {% plugshop_action banner.product "add" %}
+                        <div class="button button-blue" data-cart-type="button" data-cart-id="{{banner.product.id}}">
+                            <div class="button_l">
+                                <input class="button__submit" type="submit" 
+                                        value="Купить за {{ banner.product.price|plugshop_currency }} {{ banner.product.price|choose_plural:"рубль,рубля,рублей" }}">
+                            </div>
+                            <div class="button_r"></div>
+                        </div>
+                    </form>
+                    
+                    {% comment %}
+                    <span class="product__buttons-d">&nbsp;</span>
+                    
+                    <a href="#" class="round-button">
+                        <span class="icon icon__list"></span>
+                    </a>
+                    <a href="#" class="round-button">
+                        <span class="icon icon__play"></span>
+                    </a>
+                    {% endcomment %}
+                </div>
+            </section>
+        </div>
+        <div class="product-banner_r">
+            <div class="product-banner-img">
+                {% with banner.product.get_cover as img %}
+                    <img src="{{img.image_banner.url}}" width="{{img.image_banner.width}}" height="{{img.image_banner.height}}" alt="">
+                {% endwith %}
+            </div>
+        </div>
+        {% endspaceless %}
+    </div>
+</section>
