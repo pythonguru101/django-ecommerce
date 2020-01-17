@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load plugshop %}
+{% load pytils_numeral %}
+{% load powerball_tags %}
+
+{% block content %}
+
+<section class="container cart-element">
+    <div class="product-box_s">
+        <h1>Спасибо за заказ</h1>
+        <h3>Номер вашего заказа <strong>{{order.number}}</strong>.</h3>
+        <h3>Стоимость заказа составит {{order.price_total|plugshop_currency}} {{order.price_total|choose_plural:"рубль,рубля,рублей"}}.</h3>
+        <h3>В ближайшее время с вами свяжется менеджер для подтверждения заказа.</h3> 
+        <h3>Вопросы? Изменение в заказе? Звоните: {{app.phone}}.</h3>
+    </div>
+
+</section>
+
+<section class="container">
+    <div class="product-box_s">
+        <table class="cart__goods">
+            <tbody>
+                {% for item in order.ordered_items.all %}
+                    {% with item.product as product %}
+                        <tr data-cart-type="product">
+                            <td class="cart__goods__col1">
+                                {% with product.get_cover as img %}
+                                    <img src="{{img.image_cart.url}}" width="{{img.image_cart.width}}" height="{{img.image_cart.height}}" alt="{{product.name}}">
+                                {% endwith %}
+                            </td>
+                            <td class="cart__goods__col2">
+                                <div class="cart__goods-name">
+                                    <a href="{{product.get_absolute_url }}">{{product.name}}</a>
+                                </div>
+                                <div class="cart__goods-price" data-cart-type="product_price">
+                                    {{item.price|plugshop_currency}} {{item.price|choose_plural:"рубль,рубля,рублей"}}
+                                </div>
+                            </td>
+                            <td class="cart__goods__col3">{{product.price}} &times; {{item.quantity}}</td>
+                        </tr>
+                        <tr data-cart-id="{{product.id}}">
+                            <td colspan="5"><hr></td>
+                        </tr>
+                    {% endwith %}
+                {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td class="cart__goods__col1"></td>
+                    <td colspan="2">
+                        <div class="cart__goods-name">Сумма вашего заказа с учётом доставки</div>
+                        <div class="cart__goods-price" data-cart-type="price_total">{{order.price_total|plugshop_currency}} {{order.price_total|choose_plural:"рубль,рубля,рублей"}}</div>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+</section>
+{% endblock %}
+
+<script type="text/javascript">
+    {% block google_analytics_inner %}
+    _gaq.push(['_addTrans',
+        '{{order.number}}',
+        'powerballs.ru',
+        '{{order.price_without_shipping}}',
+        '0',
+        '{{order.shipping_type.price}}',
+        'Moscow',
+        'Moscow',
+        'Russia'
+      ]);
+      {% for item in order.ordered_items.select_related.all %}
+      _gaq.push(['_addItem',
+           '{{order.number}}',                  // order ID - necessary to associate item with transaction
+           '{{item.product.slug}}',             // SKU/code - required
+           '{{item.product.name}}',             // product name - necessary to associate revenue with product
+           '{{item.product.category.name}}',    // category or variation
+           '{{item.product.price}}',            // unit price - required
+           '{{item.quantity}}'                  // quantity - required
+        ]);
+      {% endfor %}
+      _gaq.push(['_trackTrans']);
+    {% endblock %}
+</script>

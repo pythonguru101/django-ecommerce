@@ -1,0 +1,11 @@
+{% load plugshop %}
+{% load pytils_numeral %}
+<div class="page-cart{% if not cart_button %} page-cart_s{% endif %}">
+    <div data-cart-type="cart"{% if request.cart|length == 0 %} style="display: none"{% endif %}>
+        {% if cart_button %}
+            <a class="page-cart__inner" href="{% url plugshop-cart %}">Оформить заказ <span data-cart-type="goods_count">{{request.cart|length|get_plural:"товар,товара,товаров"}}</span></a>
+        {% else %}
+            <span class="page-cart__inner">Ваш заказ, <span data-cart-type="goods_count">{{request.cart|length|get_plural:"товар,товара,товаров"}}</span></span>
+        {% endif %}
+    </div>
+</div>

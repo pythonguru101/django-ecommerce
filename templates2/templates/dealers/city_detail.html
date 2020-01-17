@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% load markup %}
+{% load powerball_tags %}
+
+{% block body_class %} withmap{% endblock %}
+
+{% block js_include %}
+<script src="http://api-maps.yandex.ru/2.0/?load=package.full&amp;lang=ru-RU"></script>
+<script>
+    (function($) {
+        $(function() {
+            new PowerBall.YandexMap('yandexmap');
+        });
+    }(jQuery));
+</script>
+{% endblock %}
+
+{% block substrate %}
+    <div class="page__substrate">
+        <div id="yandexmap" class="map"></div>
+    </div>
+{% endblock %}
+
+{% block content %}
+{# <div class="page__substrate"> #}
+{#     <div id="yandexmap" class="map"></div> #}
+{# </div> #}
+<section class="container">
+    <div class="dealers">
+        <div class="dealers__detail">
+            <a class="dealers__backurl" href="{% url dealers %}">другие города</a>
+            <h3 class="dealers__city-name">{{city.name}}</h3>
+            <ul class="dealers__list">
+                {% for dealer in dealers %}
+                    <li class="dealers__list__item">
+                        <h4 class="dealers__name">{{dealer.name}}</h4>
+                        {% if dealer.site %}
+                            <div class="dealers__site">
+                                <a href="{{dealer.site}}">{{dealer.site|url2domain}}</a> 
+                            </div>
+                        {% endif %}
+
+                        <ul class="dealers__shop-list">
+                            {% for shop in dealer.shops.all %}
+                            <li class="dealers__shop-list__item">
+                                <a title="{{dealer.name}}" 
+                                    class="dealers__shop-list__address" 
+                                    {% if shop.address %} 
+                                        data-map-address="{{city.name}}, {{shop.address}}"
+                                        data-map-zoom="15" 
+                                    {% endif %}
+                                    data-map-zoomcity="12" data-map-city="{{city.name}}">
+                                    <span class="dealers__shop-list__icon"></span>
+                                    {% if shop.name %}
+                                        <span class="dealers__shop-list__address-s">{{shop.name}}</span>
+                                    {% endif %}
+                                    <span class="dealers__shop-list__address-s">{{shop.address}}{% if shop.metro %}, {{shop.metro}} м{% endif %}</span>
+                                </a>
+                                {% if shop.description %}
+                                    <span class="dealers__shop-list__data">{{shop.description}}</span>
+                                {% endif %}
+                                {% if shop.phone %}
+                                    <span class="dealers__shop-list__data">{{shop.phone}}</span>
+                                {% endif %}
+                            </li>
+                            {% endfor %}
+
+                        </ul>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</section>
+{% endblock content %}

@@ -1,0 +1,20 @@
+{% extends "admin/base.html" %}
+{% load i18n %}
+{% load static %}
+
+{% block extrastyle %}
+    {{ block.super }}
+    <link rel="stylesheet" href="{% static 'stylesheets/admin_extra.css' %}">
+{% endblock %}
+
+{# {% block extrahead %} #}
+{#     {% js_asset_tag "javascripts/jsi18n_fix.js" %} #}
+{# {% endblock %} #}
+
+{% block title %}{{ title }} | {% trans 'Django site admin' %}{% endblock %}
+
+{% block branding %}
+<h1 id="site-name">{% trans 'Django administration' %}</h1>
+{% endblock %}
+
+{% block nav-global %}{% endblock %}

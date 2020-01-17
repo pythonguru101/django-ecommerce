@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block header_cart %}
+    {% include "plugshop/_header_cart.html" with cart_button=False %}
+{% endblock %}
+
+{% block content %}
+    <section class="container">
+        <div class="cart-box">
+            {% with request.cart as cart  %}
+                {% if cart|length %}
+                    {% spaceless %}
+                    <div class="cart-box__cart">
+                        {% include "plugshop/_cart.html" %}
+                    </div>
+                    <div class="cart-box__order">
+                        {% include "plugshop/_order_form.html" %}
+                    </div>
+                    {% endspaceless %}
+                {% else %}
+                {% endif %}
+            {% endwith %}
+        </div>
+    </section>
+{% endblock %}

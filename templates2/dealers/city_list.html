@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block body_class %} withmap{% endblock %}
+
+{% block js_include %}
+<script src="http://api-maps.yandex.ru/2.0/?load=package.full&amp;lang=ru-RU"></script>
+<script>
+    (function($) {
+        $(function() {
+            new PowerBall.YandexMap('yandexmap');
+        })
+    }(jQuery));
+</script>
+{% endblock %}
+
+{% block substrate %}
+    <div class="page__substrate">
+        <div id="yandexmap" class="map"></div>
+    </div>
+{% endblock %}
+
+{% block content %}
+{# <div class="page__substrate"> #}
+{#     <div id="yandexmap" class="map"></div> #}
+{# </div> #}
+<section class="container">
+    <div class="dealers">
+        <div class="dealers__cities">
+            <ul class="dealers__city-list">
+                {% for city in city_list %}
+                    <li class="dealers__city-list__item">
+                        <a class="dealers__city-list__name" href="{{city.get_absolute_url}}">{{city.name}}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</section>
+{% endblock content %}

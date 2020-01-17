@@ -1,0 +1,75 @@
+{% extends 'layout.html' %}
+{% load powerball_tags %}
+{% load flatpages %}
+
+{% block header %}
+<header class="page-header">
+    <div class="container">
+        <a href="/" class="page-logo"></a>
+        <span class="page-phone">{{app.phone}}</span>
+    </div>
+</header>
+{% endblock %}
+
+{% block navigation %}
+    <nav class="page-navigation">
+        <div class="container clear">
+            {% block navigation_menu %}
+            <ul>
+                <li class="page-navigation__item page-navigation__item_first{% active_tag request "/shop/categories/" "page-navigation__item_s" %}">
+                    <a href="{% url plugshop-caterory-list %}">Модели</a>
+                </li>
+                {% get_flatpages as flatpages %}
+                {% for page in flatpages|sort_flatpage %}
+                    <li class="page-navigation__item{% active_tag request '^'|add:page.url|add:'$' 'page-navigation__item_s' %}">
+                        <a href="{{ page.url }}">{{page.title}}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+            {% endblock %}
+            <div class="page-navigation__right">
+                {% block header_cart %}
+                    {% include "plugshop/_header_cart.html" with cart_button=1 %}
+                {% endblock  %}
+                {% block navigation_right %}{% endblock %}
+            </div>
+        </div>
+    </nav>
+{% endblock %}
+
+{% block banner %}
+    {% if banner %}
+        <section class="container">
+        {% include banner.template with banner=banner %}
+        </section>
+        <hr>
+    {% endif %}
+{% endblock %}
+
+{% block footer %}
+<footer class="page-footer">
+    <section class="container">
+        <div class="copyright-disclaimer"></div>
+        <div class="copyright-text">
+            <p>© 2005-{% now "Y" %} Интернет-представительство Powerballs.ru, {{app.email}}.</p>
+            {# <p>Все товары сертифицированы, использование текстов, графики и видео с сайта запрещено без разрешения ООО «Гросс-Снаб».</p> #}
+            {# <p>Доставка и управление магазином осуществляется ООО «Удивительные Подарки».</p> #}
+        </div>
+        <div class="copyright-label">Сайт сделан в студии <a href="http://kittyhug.ru/">Kitty Hug</a></div>
+    </section>
+</footer>
+{% endblock %}
+
+{% block google_analytics %}
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-301604-4']);
+      _gaq.push(['_trackPageview']);
+      {% block google_analytics_inner %}{% endblock %}
+      (function() {
+        var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+        ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+      })();
+    </script>
+{% endblock %}
