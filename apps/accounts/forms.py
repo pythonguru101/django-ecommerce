@@ -7,20 +7,19 @@ from django.contrib.auth.models import User
 
 
 class PasswordForm(forms.Form):
-    
     password1 = forms.CharField(widget=forms.PasswordInput, error_messages={
-                                    'required': _(u'Введите пароль')
-                                })
+        'required': _(u'Введите пароль')
+    })
     password2 = forms.CharField(widget=forms.PasswordInput, error_messages={
-                                    'required': _(u'Пароли не совпадают')
-                                })
+        'required': _(u'Пароли не совпадают')
+    })
 
     def clean_password1(self):
         pswd1 = self.cleaned_data.get('password1')
         r = re.compile('^[a-zA-Z0-9\_\-]+$')
         if not r.match(pswd1):
             raise forms.ValidationError(_(u'Пароль может содержать только латинские буквы, цифры и знаки «_» и «-»'))
-            
+
         if len(pswd1) < 4 or len(pswd1) > 32:
             raise forms.ValidationError(_(u'Длина пароля от 4 до 32 символов'))
         return pswd1
@@ -41,7 +40,7 @@ class UserForm(UserCreationForm):
 
     class Meta:
         model = User
-        fields = ('email', 'first_name', 'last_name', )
+        fields = ('email', 'first_name', 'last_name',)
 
     def __init__(self, *args, **kwargs):
         super(UserForm, self).__init__(*args, **kwargs)
@@ -62,7 +61,7 @@ class UserForm(UserCreationForm):
         if commit:
             user.save()
         return user
-    
+
     def clean_email(self):
         email = self.cleaned_data.get('email')
         try:
