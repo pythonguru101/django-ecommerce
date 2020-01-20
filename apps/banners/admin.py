@@ -12,8 +12,8 @@ class PolyBannerAdmin(admin.ModelAdmin):
         return redirect(reverse('admin:banners_banner_changelist'))
 
     def response_add(self, request, obj, post_url_continue='../%s/'):
-        orig = super(PolyBannerAdmin, self).response_add(request, obj, 
-                        post_url_continue)
+        orig = super(PolyBannerAdmin, self).response_add(request, obj,
+                                                         post_url_continue)
         return redirect(reverse('admin:banners_banner_changelist'))
 
 
@@ -25,18 +25,17 @@ class BannerTextAdmin(PolyBannerAdmin):
 class BannerImageAdmin(PolyBannerAdmin):
     def get_model_perms(self, request):
         return {}
-    
+
 
 class BannerProductAdmin(PolyBannerAdmin):
     def get_model_perms(self, request):
         return {}
-    
+
 
 class BannerAdmin(PolyBannerAdmin):
-    
     def has_add_permission(self, request):
         return False
-    
+
     def get_form(self, request, obj=None, **kwargs):
         if isinstance(obj, BannerText):
             return BannerTextAdminForm
@@ -46,12 +45,12 @@ class BannerAdmin(PolyBannerAdmin):
             return BannerImageAdminForm
         else:
             return super(BannerAdmin, self).get_form(request, obj, **kwargs)
-    
+
     def changelist_view(self, request, extra_context=None):
         tr = super(BannerAdmin, self).changelist_view(request, extra_context)
         return tr
-    
-    def change_view(self, request, object_id, form_url = '', extra_context=None):
+
+    def change_view(self, request, object_id, form_url='', extra_context=None):
         # extra_context['osm_data'] = self.get_osm_info()
         return super(BannerAdmin, self).change_view(request, object_id, extra_context=extra_context)
 
@@ -60,7 +59,7 @@ class BannerAdmin(PolyBannerAdmin):
         'is_active',
         'sort',
     )
-    list_editable = ('sort', )
+    list_editable = ('sort',)
 
 
 admin.site.register(Banner, BannerAdmin)
