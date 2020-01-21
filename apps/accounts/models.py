@@ -22,7 +22,6 @@ def expiration_date():
 
 
 class ProfileRegistrationManager(models.Manager):
-
     def activate_user(self, activation_key):
         sha1_re = re.compile('^[a-f0-9]{40}$')
         if sha1_re.search(activation_key):
@@ -49,14 +48,14 @@ class ProfileRegistrationManager(models.Manager):
 
         salt = sha_constructor(str(random.random())).hexdigest()
         username = user.username
-        
+
         # if isinstance(username, unicode):
         #     username = username.encode('utf-8')
         activation_key = sha_constructor(salt + username).hexdigest()
-        
+
         user.is_active = False
         user.save()
-        
+
         reg.activation_key = activation_key
         reg.is_confirmed = False
         reg.expired_at = expiration_date()
@@ -73,13 +72,12 @@ class ProfileRegistrationManager(models.Manager):
 
 
 class ProfileRegistration(models.Model):
-
     user = models.OneToOneField(User, primary_key=True, verbose_name=_(u'пользователь'), on_delete=models.CASCADE)
-    activation_key = models.CharField(_(u'ключ для активации'), blank=False, 
-                                        max_length=40)
+    activation_key = models.CharField(_(u'ключ для активации'), blank=False,
+                                      max_length=40)
     is_confirmed = models.BooleanField(_(u'активирован'), default=False)
-    expired_at = models.DateTimeField(_(u'истекает'), blank=True, 
-                                        default=expiration_date)
+    expired_at = models.DateTimeField(_(u'истекает'), blank=True,
+                                      default=expiration_date)
 
     objects = ProfileRegistrationManager()
 
@@ -89,16 +87,17 @@ class ProfileRegistration(models.Model):
 
     def __unicode__(self):
         return _(u'Регистрация')
-    
+
     def __notify_user(self, *args, **kwargs):
         ctx_dict = kwargs['context']
         subject = kwargs['subject']
         message = render_to_string(kwargs['template'], ctx_dict)
-        return self.user.email_user(subject, message, 
+        return self.user.email_user(subject, message,
                                     settings.DEFAULT_FROM_EMAIL)
 
     def is_expired(self):
         return datetime.datetime.now() >= self.expired_at
+
     is_expired.boolean = True
 
     def send_regenerated_email(self):
@@ -127,12 +126,11 @@ class ProfileRegistration(models.Model):
 
 
 class City(models.Model):
-
     class Meta:
         verbose_name = _(u'город')
         verbose_name_plural = _(u'города')
 
-    name = models.CharField(_(u'город'), unique=True, blank=False, 
+    name = models.CharField(_(u'город'), unique=True, blank=False,
                             max_length=80)
 
     def __unicode__(self):
@@ -140,7 +138,6 @@ class City(models.Model):
 
 
 class Profile(models.Model):
-
     class Meta:
         verbose_name = _(u'Профиль')
         verbose_name_plural = _(u'Профиль')
@@ -150,14 +147,14 @@ class Profile(models.Model):
         (2, _(u'жен')),
     )
     GENDER_CHOICES_DEFAULT = 1
-    
+
     user = models.OneToOneField(User, primary_key=True, verbose_name=_(u'пользователь'), on_delete=models.CASCADE)
     city = models.ForeignKey(City, blank=True, null=True, verbose_name=_(u'город'), on_delete=models.CASCADE)
     phone = models.CharField(_(u'телефон'), blank=True, max_length=80)
     birthdate = models.DateField(_(u'дата рождения'), blank=True, null=True)
-    gender = models.PositiveIntegerField(_(u'пол'), blank=False, 
-                                            choices=GENDER_CHOICES,
-                                            default=GENDER_CHOICES_DEFAULT)
+    gender = models.PositiveIntegerField(_(u'пол'), blank=False,
+                                         choices=GENDER_CHOICES,
+                                         default=GENDER_CHOICES_DEFAULT)
 
     def __unicode__(self):
         user = self.user
