@@ -4,11 +4,12 @@ from django.contrib import admin
 from .models import *
 from .forms import PostAdminForm
 
+
 class PostAdmin(admin.ModelAdmin):
     form = PostAdminForm
     adminfiles_fields = ['description']
     list_display = (
-        'title', 
+        'title',
         'status',
         'publish_date',
     )
@@ -31,6 +32,8 @@ class PostAdmin(admin.ModelAdmin):
         }),
     )
     prepopulated_fields = {
-        'slug': ('title',) 
+        'slug': ('title',)
     }
+
+
 admin.site.register(Post, PostAdmin)
