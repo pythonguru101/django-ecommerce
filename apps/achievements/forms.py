@@ -6,6 +6,7 @@ from markdownx.widgets import MarkdownxWidget
 from .models import Record, Category, RecordProof
 from apps.shop.models import Product
 
+
 class RecordForm(forms.ModelForm):
     class Meta:
         model = Record
@@ -15,18 +16,18 @@ class RecordForm(forms.ModelForm):
         )
 
     powerball = forms.ModelChoiceField(empty_label=None,
-                        queryset=Product.objects.filter(is_active=True))
+                                       queryset=Product.objects.filter(is_active=True))
     category = forms.ModelChoiceField(empty_label=None,
-                        queryset=Category.objects.filter(is_active=True))
+                                      queryset=Category.objects.filter(is_active=True))
     name = forms.CharField(required=True, error_messages={
-                                'required': _(u'Укажите имя')
-                            })
+        'required': _(u'Укажите имя')
+    })
     email = forms.EmailField(required=True, error_messages={
-                                'required': _(u'Укажите email')
-                            })
+        'required': _(u'Укажите email')
+    })
     image = forms.FileField(required=True, error_messages={
-                                    'required': _(u'Приложите фото')
-                                })
+        'required': _(u'Приложите фото')
+    })
 
     def clean_name(self):
         name = self.cleaned_data.get('name').strip().split()
@@ -34,7 +35,7 @@ class RecordForm(forms.ModelForm):
 
         if len(name):
             self.cleaned_data['first_name'] = name[0]
-            self.cleaned_data['last_name']  = " ".join(name[1:])
+            self.cleaned_data['last_name'] = " ".join(name[1:])
         else:
             raise forms.ValidationError(_(u'Введите имя'))
 
