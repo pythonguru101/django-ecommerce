@@ -42,12 +42,13 @@ from apps.utils import upload_to
     )
 """
 
+
 def file_copy(name):
     img_to_name = upload_to(name)
-    img_from = os.path.join(settings.MEDIA_ROOT, 'uploads', 'userphotos', 
+    img_from = os.path.join(settings.MEDIA_ROOT, 'uploads', 'userphotos',
                             name)
-    img_to = os.path.join(settings.MEDIA_ROOT, 'uploads', 'achievements', 
-                            img_to_name)
+    img_to = os.path.join(settings.MEDIA_ROOT, 'uploads', 'achievements',
+                          img_to_name)
 
     if os.path.isfile(img_from):
         shutil.copyfile(img_from, img_to)
@@ -55,13 +56,14 @@ def file_copy(name):
     else:
         return False
 
+
 def import_proofs():
     conn = mysql.connect(
-        host = "localhost",
-        user = "root",
-        passwd = "chill",
-        charset = "utf8",
-        use_unicode = True
+        host="localhost",
+        user="root",
+        passwd="chill",
+        charset="utf8",
+        use_unicode=True
     )
     cursor = conn.cursor()
     records = Record.objects.all()
@@ -83,12 +85,11 @@ WHERE record=%s AND record_date='%s';" % (record.value, record.created_at)
     conn.close()
 
 
-
 class Command(BaseCommand):
     args = ''
     help = 'import old powerball.ru'
     can_import_settings = True
-    
+
     def handle(self, *args, **options):
         import_proofs()
         self.stdout.write('import')
