@@ -22,11 +22,11 @@ class BannerProductAdminForm(forms.ModelForm):
             'text': MarkdownxWidget(),
         }
 
-        
+
 class BannerImageAdminForm(forms.ModelForm):
     class Meta:
         model = BannerImage
         fields = '__all__'
         widgets = {
-            'text': forms.Textarea(attrs={'rows':'20', 'cols': '80'})
+            'text': forms.Textarea(attrs={'rows': '20', 'cols': '80'})
         }
