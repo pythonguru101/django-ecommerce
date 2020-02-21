@@ -1,15 +1,16 @@
 # encoding: utf-8
 import markdown
+from django.contrib.sitemaps import Sitemap
+from django.contrib.syndication.views import Feed
+from django.http import Http404
+from django.shortcuts import get_object_or_404, redirect, render_to_response
+from django.template import RequestContext
 from django.utils.translation import ugettext as _
 from django.views.generic import ListView, DetailView
-from django.contrib.sitemaps import Sitemap
-from django.template import RequestContext
-from django.http import Http404
-from django.contrib.syndication.views import Feed
-from django.shortcuts import get_object_or_404, redirect, render_to_response
 
-from .models import Post
 from apps.main.models import Page
+from .models import Post
+
 
 def powerball_redirect(request, slug):
     try:
@@ -22,31 +23,33 @@ def powerball_redirect(request, slug):
     except Page.DoesNotExist:
         try:
             post = get_object_or_404(Post, slug=slug)
-            return redirect('blog-post', 
-                        year = post.publish_date.year,
-                        month = post.publish_date.strftime("%m"),
-                        day = post.publish_date.strftime("%d"),
-                        slug = post.slug)
+            return redirect('blog-post',
+                            year=post.publish_date.year,
+                            month=post.publish_date.strftime("%m"),
+                            day=post.publish_date.strftime("%d"),
+                            slug=post.slug)
         except ValueError:
             raise Http404
+
 
 class PostListView(ListView):
     context_object_name = 'posts'
     queryset = Post.objects.published_posts()
     paginate_by = 10
     page = 1
-        
+
+
 class PostView(DetailView):
     context_object_name = 'post'
     model = Post
 
-    
+
 class SitemapBlog(Sitemap):
     priority = 0.5
-    
+
     def items(self):
         return Post.objects.published_posts()
-        
+
     def changefreq(self, inst):
         return "daily"
 
