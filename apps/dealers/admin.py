@@ -1,12 +1,13 @@
 # encoding: utf-8
-from django.utils.translation import ugettext as _
 from django.contrib import admin
+from django.utils.translation import ugettext as _
 
 from .models import *
 
+
 class CityAdmin(admin.ModelAdmin):
     prepopulated_fields = {
-        'slug': ('name',) 
+        'slug': ('name',)
     }
     list_display = (
         'name',
@@ -17,6 +18,7 @@ class CityAdmin(admin.ModelAdmin):
         'sort',
     )
 
+
 class DealerAdmin(admin.ModelAdmin):
     list_display = (
         'name',
@@ -26,7 +28,8 @@ class DealerAdmin(admin.ModelAdmin):
     list_filter = (
         'city',
     )
-    
+
+
 class ShopAdmin(admin.ModelAdmin):
     list_filter = (
         'dealer',
@@ -36,16 +39,19 @@ class ShopAdmin(admin.ModelAdmin):
         'dealer',
         'get_city',
     )
-    
+
     def get_full_name(self, inst):
         return inst
+
     get_full_name.short_description = _(u'наименование')
-    
+
     def get_city(self, inst):
         return inst.dealer.city
+
     get_city.admin_order_field = 'dealer__city'
     get_city.short_description = _(u'город')
-    
+
+
 admin.site.register(City, CityAdmin)
 admin.site.register(Dealer, DealerAdmin)
 admin.site.register(Shop, ShopAdmin)
