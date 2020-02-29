@@ -2,15 +2,15 @@
 from django.contrib import admin
 from django.contrib.flatpages.admin import FlatPageAdmin as FlatPageAdminOld
 
-from apps.main.models import *
 from apps.main.forms import PageAdminForm
+from apps.main.models import *
 
 
 class PageAdmin(FlatPageAdminOld):
     adminfiles_fields = ['content']
     form = PageAdminForm
     list_display = (
-        'title', 
+        'title',
         'url',
         'sort',
         'is_active',
