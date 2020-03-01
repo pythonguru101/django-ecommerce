@@ -1,17 +1,16 @@
 # -*- coding: utf-8 -*-
 
-from django.db import models
-from django.urls import reverse, reverse_lazy
-from django.conf import settings
 from django.apps import apps
-from django.utils.translation import ugettext_lazy as _
+from django.conf import settings
 from django.contrib.auth.models import User
+from django.db import models
+from django.urls import reverse
+from django.utils.translation import ugettext_lazy as _
 
-from ..settings import STATUS_CHOICES, STATUS_CHOICES_START, STATUS_CHOICES_FINISH
+from ..settings import STATUS_CHOICES, STATUS_CHOICES_START
 
 
 class OrderAbstract(models.Model):
-
     user = models.ForeignKey(User, related_name='orders',
                              verbose_name=_('user'), on_delete=models.CASCADE)
     number = models.CharField(_('order number'), unique=True, blank=False,
@@ -37,11 +36,12 @@ class OrderAbstract(models.Model):
         model = apps.get_model(settings.ORDER_PRODUCTS_MODEL)
         items = model.objects.filter(order=self)
         return sum(item.quantity * item.product.price for item in items)
+
     price_total.short_description = _('Total price')
 
     def __unicode__(self):
         return str(self.pk)
 
-    #@models.permalink
+    # @models.permalink
     def get_absolute_url(self):
         return reverse('plugshop-order', kwargs={'number': self.number})
