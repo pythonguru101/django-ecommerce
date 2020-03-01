@@ -1,6 +1,6 @@
 from django import forms
-from django.utils.translation import ugettext as _
 from django.forms.widgets import Select
+from django.utils.translation import ugettext as _
 from markdownx.widgets import MarkdownxWidget
 
 from apps.main.models import Page
