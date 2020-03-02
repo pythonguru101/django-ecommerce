@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 
 from django.db import models
-from django.urls import reverse, reverse_lazy
+from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
-
-from mptt.models import MPTTModel, TreeForeignKey
 from mptt.managers import TreeManager
+from mptt.models import MPTTModel, TreeForeignKey
+
 from apps.shop.plugshop.utils import get_categories
 
 
@@ -17,7 +17,6 @@ class CategoryAbstractManager(TreeManager):
 
 
 class CategoryAbstract(MPTTModel):
-
     objects = CategoryAbstractManager()
 
     class Meta:
@@ -47,7 +46,7 @@ class CategoryAbstract(MPTTModel):
         ancestors = self.get_ancestor_list()
         return "/".join([a.slug for a in ancestors])
 
-    #@models.permalink
+    # @models.permalink
     def get_absolute_url(self):
         return reverse('plugshop-category', kwargs={'category_path': self.get_path()})
 
