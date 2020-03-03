@@ -1,11 +1,11 @@
+from django.contrib.flatpages.models import FlatPage
 from django.db import models
 from django.utils.translation import ugettext as _
-from django.contrib.flatpages.models import FlatPage
+
 from apps.core.models import MetaPage
 
 
 class Page(FlatPage, MetaPage):
-    
     sort = models.PositiveIntegerField(_(u'сортировка'), default=1)
     is_active = models.BooleanField(_(u'вкл/выкл'), default=True)
 
