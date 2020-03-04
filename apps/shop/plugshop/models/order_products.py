@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from django.db import models
 from django.conf import settings
+from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 
@@ -20,5 +20,5 @@ class OrderProductsAbstract(models.Model):
 
     def price(self):
         return self.product.price * self.quantity
-    price.short_description = _('Total price')
 
+    price.short_description = _('Total price')
