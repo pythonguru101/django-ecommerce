@@ -1,15 +1,14 @@
 # -*- coding: utf-8 -*-
 from django.conf import settings
 from django.db import models
+from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
-
 from mptt.fields import TreeForeignKey
+
 from apps.shop.plugshop.utils import get_categories
-from django.urls import reverse, reverse_lazy
 
 
 class ProductAbstract(models.Model):
-
     category = TreeForeignKey(settings.CATEGORY_MODEL, blank=True, null=True,
                               verbose_name=_('category'),
                               related_name='products', on_delete=models.CASCADE)
@@ -27,7 +26,7 @@ class ProductAbstract(models.Model):
     def __unicode__(self):
         return self.name
 
-    #@models.permalink
+    # @models.permalink
     def get_absolute_url(self):
         categories = get_categories()
         try:
