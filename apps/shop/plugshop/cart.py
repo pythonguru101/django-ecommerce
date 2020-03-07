@@ -1,12 +1,10 @@
 # -*- coding: utf-8 -*-
-import json
 from apps.shop.signals import cart_append, cart_remove, cart_empty, cart_save
-from .utils import serialize_model
 from .settings import REQUEST_NAMESPACE
+from .utils import serialize_model
 
 
 class CartItem(object):
-
     def __init__(self, product, price=0, quantity=1):
         self.product = product
         self.price = price
@@ -17,7 +15,6 @@ class CartItem(object):
 
 
 class Cart(list):
-
     def __init__(self, request, name):
         super(Cart, self).__init__()
         self.request = request
@@ -55,7 +52,6 @@ class Cart(list):
                 CartItem(product, price, quantity)
             )
         if not kwargs.get('stop_signal', None):
-
             cart_append.send(sender=self.__class__,
                              item=item or product,
                              price=price, quantity=quantity)
@@ -93,9 +89,9 @@ class Cart(list):
 
     def get_products(self):
         return [{'product': serialize_model(item.product),
-                'price': item.price,
-                'price_total': item.price_total(),
-                'quantity': item.quantity} for item in self]
+                 'price': item.price,
+                 'price_total': item.price_total(),
+                 'quantity': item.quantity} for item in self]
 
 
 def get_cart(request):
