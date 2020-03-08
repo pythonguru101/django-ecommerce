@@ -3,21 +3,21 @@
 from django.conf.urls import url
 from django.utils.translation import ugettext_lazy as _
 
-from .views import *
 from .exceptions import NoUrlFound
+from .views import *
 
 urlpatterns = [
     url(r'^$', ProductListView.as_view(), name='plugshop'),
     url(r'^products/$', ProductListView.as_view(),
         name='plugshop-product-list'),
 
-    #categories
+    # categories
     url(r'^categories/$', CategoryListView.as_view(),
         name='plugshop-caterory-list'),
     url(r'^products/(?P<category_path>[\-\/\w]+)/$', CategoryView.as_view(),
         name='plugshop-category'),
 
-    #products
+    # products
     url(r'^products/(?P<category_path>[\-\/\w]+)/(?P<slug>[\-\/\w]+)$',
         ProductView.as_view(), name='plugshop-product'),
 
@@ -26,6 +26,7 @@ urlpatterns = [
         name='plugshop-order'),
     url(r'^order/$', OrderCreateView.as_view(), name='plugshop-order-new'),
 ]
+
 
 def get_url(name):
     patterns = list(filter(lambda x: x.name == name, urlpatterns))
