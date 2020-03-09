@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from django.utils.translation import ugettext_lazy as _
 from django.conf import settings
+from django.utils.translation import ugettext_lazy as _
 
 MODELS = getattr(settings, 'PLUGSHOP_MODELS', {})
 FORMS = getattr(settings, 'PLUGSHOP_FORMS', {})
@@ -30,11 +30,11 @@ SESSION_NAMESPACE = CONFIG.get('SESSION_NAMESPACE', 'cart')
 URL_PREFIX = CONFIG.get('URL_PREFIX', '')
 
 STATUS_CHOICES = OPTIONS.get('STATUS_CHOICES', (
-                            (1, _('Created')),
-                            (2, _('Confirmed')),
-                            (3, _('Denied')),
-                            (4, _('Shipped')),
-                            (5, _('Completed'))))
+    (1, _('Created')),
+    (2, _('Confirmed')),
+    (3, _('Denied')),
+    (4, _('Shipped')),
+    (5, _('Completed'))))
 STATUS_CHOICES_START = STATUS_CHOICES[0][0]
 STATUS_CHOICES_FINISH = STATUS_CHOICES[-1][0]
 
