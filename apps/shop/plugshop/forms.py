@@ -3,8 +3,8 @@
 from django import forms
 from django.apps import apps
 from django.conf import settings
-from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
+from django.utils.translation import ugettext_lazy as _
 
 PRODUCT_CLASS = apps.get_model(settings.PRODUCT_MODEL)
 ORDER_CLASS = apps.get_model(settings.ORDER_MODEL)
@@ -20,7 +20,6 @@ class ProductForm(forms.Form):
 
 
 class OrderForm(forms.ModelForm):
-
     class Meta:
         model = ORDER_CLASS
         exclude = (
@@ -33,9 +32,9 @@ class OrderForm(forms.ModelForm):
         )
 
     name = forms.CharField(required=True, error_messages={
-                           'required': NAME_ERROR})
+        'required': NAME_ERROR})
     email = forms.EmailField(required=True, error_messages={
-                             'required': EMAIL_ERROR})
+        'required': EMAIL_ERROR})
 
     def save(self, commit=True, **kwargs):
         cart = kwargs.get('cart')
