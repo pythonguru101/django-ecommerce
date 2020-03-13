@@ -1,10 +1,11 @@
 import re
+
 from django import forms
 from django.utils.translation import ugettext as _
 from markdownx.widgets import MarkdownxWidget
 
-from .plugshop.forms import OrderForm as PlugshopOrderForm
 from apps.shop.models import Product, ShippingType, Category
+from .plugshop.forms import OrderForm as PlugshopOrderForm
 
 
 class CategoryAdminForm(forms.ModelForm):
@@ -29,22 +30,22 @@ class ProductAdminForm(forms.ModelForm):
 
 class OrderForm(PlugshopOrderForm):
     shipping_type = forms.ModelChoiceField(empty_label=None,
-                        queryset=ShippingType.objects.filter(is_active=True))
+                                           queryset=ShippingType.objects.filter(is_active=True))
     name = forms.CharField(required=True, error_messages={
-                                'required': _(u'Укажите имя')
-                            })
+        'required': _(u'Укажите имя')
+    })
     email = forms.EmailField(required=True, error_messages={
-                                    'required': _(u'Укажите email')
-                                })
+        'required': _(u'Укажите email')
+    })
     phone = forms.CharField(required=True, error_messages={
-                                    'required': _(u'Укажите телефон')
-                                })
-    
+        'required': _(u'Укажите телефон')
+    })
+
     def __require(self, name, error):
         value = self.cleaned_data.get(name, None)
-        if len(value) == 0: 
+        if len(value) == 0:
             self.errors[name] = [error]
-            
+
     def clean_name(self):
         name = self.cleaned_data.get('name').strip().split()
         shipping_type = self.cleaned_data.get('shipping_type')
@@ -52,13 +53,13 @@ class OrderForm(PlugshopOrderForm):
             raise forms.ValidationError(_(u'Введите фамилию имя и отчество'))
 
         if len(name):
-            self.cleaned_data['last_name']  = name[0]
+            self.cleaned_data['last_name'] = name[0]
             self.cleaned_data['first_name'] = " ".join(name[1:])
         else:
             raise forms.ValidationError(_(u'Введите имя'))
 
         return " ".join(name)
-        
+
     def clean(self):
         cleaned_data = self.cleaned_data
         shipping_type = cleaned_data.get('shipping_type')
