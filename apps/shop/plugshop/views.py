@@ -13,8 +13,8 @@ from django.views.generic.base import TemplateResponseMixin
 
 from .cart import get_cart
 from .forms import ProductForm
-from .utils import load_class
 from .settings import MESSAGE_NEW_ORDER_ADMIN, MESSAGE_NEW_ORDER_USER, MESSAGE_SUCCESS
+from .utils import load_class
 
 PRODUCT_CLASS = apps.get_model(settings.PRODUCT_MODEL)
 CATEGORY_CLASS = apps.get_model(settings.CATEGORY_MODEL)
@@ -252,7 +252,7 @@ class OrderCreateView(FormView):
         order_create.send(sender=self, order=order, request=self.request)
 
         return redirect(order.get_absolute_url())
-        #return super(OrderCreateView, self).form_valid(form)
+        # return super(OrderCreateView, self).form_valid(form)
 
     def form_invalid(self, form):
         return self.render_to_response(self.get_context_data(form=form))
