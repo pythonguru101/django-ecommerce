@@ -1,7 +1,8 @@
-from django.core.cache import cache
+from importlib import import_module
+
 from django.apps import apps
 from django.conf import settings
-from importlib import import_module
+from django.core.cache import cache
 
 
 def load_class(path):
