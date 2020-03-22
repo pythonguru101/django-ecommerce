@@ -1,7 +1,7 @@
-from .plugshop.urls import get_url
 from django.conf.urls import url
 
 from apps.shop.views import *
+from .plugshop.urls import get_url
 
 root = get_url('plugshop')
 cart_url = get_url('plugshop-cart')
