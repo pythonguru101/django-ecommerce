@@ -13,7 +13,6 @@ TEMPLATE_MODE = 1
 
 ALLOWED_HOSTS = ['*']
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -84,16 +83,15 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/2.1/ref/settings/#databases
 
-#DATABASES = {
+# DATABASES = {
 #   'default': {
 #       'ENGINE': 'django.db.backends.sqlite3',
 #       'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
 #   }
-#}
+# }
 
 DATABASES = {
     'default': {
@@ -124,7 +122,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
 
@@ -137,7 +134,6 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
@@ -158,14 +154,11 @@ PRODUCT_MODEL = 'shop.Product'
 ORDER_MODEL = 'shop.Order'
 ORDER_PRODUCTS_MODEL = 'shop.OrderProducts'
 
-
 ACCOUNT_ACTIVATION_DAYS = 14
-
 
 # Email settings
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 DEFAULT_FROM_EMAIL = 'info@powerball.ru'
-
 
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
