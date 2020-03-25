@@ -1,16 +1,14 @@
 from django.conf import settings
 from django.conf.urls import include, url
-
+from django.contrib import admin
+from django.contrib.sitemaps import views as sitemaps_views
 from django.http import HttpResponseRedirect
 from django.views.decorators.cache import cache_page
-from django.contrib.sitemaps import views as sitemaps_views
-from django.contrib import admin
 
+from apps.achievements.views import SitemapRecordCategory, SitemapRecord
+from apps.blog.views import SitemapBlog, BlogFeed, powerball_redirect
 from apps.main.views import Page404View, RootView, yandex_market_view
 from apps.main.views import SitemapShop, RootSitemap
-from apps.blog.views import SitemapBlog, BlogFeed, powerball_redirect
-from apps.achievements.views import SitemapRecordCategory, SitemapRecord
-
 
 admin.site.site_header = 'Powerballs Dashboard'
 admin.site.site_title = 'Powerballs'
@@ -25,9 +23,8 @@ sitemaps = {
 
 cache_time = 60 * 60 * 24
 
-
 js_info_dict = {
-    'packages': ('django.contrib.admin', ),
+    'packages': ('django.contrib.admin',),
 }
 
 urlpatterns = [
@@ -57,7 +54,6 @@ urlpatterns = [
     url(r'^sitemap-(?P<section>.+)\.xml$', cache_page(cache_time)(sitemaps_views.sitemap),
         {'sitemaps': sitemaps}),
 ]
-
 
 if settings.DEBUG:
     from django.conf.urls.static import static
