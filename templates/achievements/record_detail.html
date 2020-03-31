@@ -1,48 +1,49 @@
 {% extends 'base.html' %}
 {% block content %}
-    <section class="container ach-page">
-        <div class="product-box">
-            {% spaceless %}
-            <h1>{{record.category.name}}</h1>
-            <div class="ach-buttons">
-                <a class="ach-url" href="{% url 'achievements-category' record.category.slug %}">Назад к таблице рекордов</a>
-            </div>
-            {% endspaceless %}
+  <section class="container ach-page">
+    <div class="product-box">
+      {% spaceless %}
+        <h1>{{ record.category.name }}</h1>
+        <div class="ach-buttons">
+          <a class="ach-url" href="{% url 'achievements-category' record.category.slug %}">Назад к таблице рекордов</a>
         </div>
-        <div class="product-box">
-            {% spaceless %}
-            <div class="record-page__l">
-                {% with record.user as user %}
-                    <dl class="record-def">
-                        <dd class="record-def__key">Имя</dd>
-                        <dt class="record-def__value">{{user.first_name}} {{user.last_name}}</dt>
-                        
-                        {% if record.powerball %}
-                            <dd class="record-def__key">Модель</dd>
-                            <dt class="record-def__value">{{record.powerball.name}}</dt>
-                        {% endif %}
-                        
-                        <dd class="record-def__key">Количество оборотов</dd>
-                        <dt class="record-def__value">{{record.value}}</dt>
-                        
-                        {% if record.comment %}
-                            <dd class="record-def__key">Комментарий</dd>
-                            <dt class="record-def__value">{{record.comment}}</dt>
-                        {% endif %}
-                    </dl>
-                {% endwith %}
-            </div>
-            <div class="record-page__r">
-                <dl class="record-def">
-                    <dd class="record-def__key">&nbsp;</dd>
-                    <dt class="record-def__value">
-                        {% with record.proofs.all|first as proof %}
-                            <img src="{{proof.image_photo.url}}" width="{{proof.image_photo.width}}" height="{{proof.image_photo.height}}" alt="{{record.value}}">
-                        {% endwith %}
-                    </dt>
-                </dl>
-            </div>
-            {% endspaceless %}
+      {% endspaceless %}
+    </div>
+    <div class="product-box">
+      {% spaceless %}
+        <div class="record-page__l">
+          {% with record.user as user %}
+            <dl class="record-def">
+              <dd class="record-def__key">Имя</dd>
+              <dt class="record-def__value">{{ user.first_name }} {{ user.last_name }}</dt>
+
+              {% if record.powerball %}
+                <dd class="record-def__key">Модель</dd>
+                <dt class="record-def__value">{{ record.powerball.name }}</dt>
+              {% endif %}
+
+              <dd class="record-def__key">Количество оборотов</dd>
+              <dt class="record-def__value">{{ record.value }}</dt>
+
+              {% if record.comment %}
+                <dd class="record-def__key">Комментарий</dd>
+                <dt class="record-def__value">{{ record.comment }}</dt>
+              {% endif %}
+            </dl>
+          {% endwith %}
         </div>
-    </section>
+        <div class="record-page__r">
+          <dl class="record-def">
+            <dd class="record-def__key">&nbsp;</dd>
+            <dt class="record-def__value">
+              {% with record.proofs.all|first as proof %}
+                <img src="{{ proof.image_photo.url }}" width="{{ proof.image_photo.width }}"
+                     height="{{ proof.image_photo.height }}" alt="{{ record.value }}">
+              {% endwith %}
+            </dt>
+          </dl>
+        </div>
+      {% endspaceless %}
+    </div>
+  </section>
 {% endblock %}
