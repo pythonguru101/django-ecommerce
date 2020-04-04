@@ -5,31 +5,31 @@
 {% load pytils_numeral %}
 
 {% block meta_keywords %}
-    {% if page.meta_keywords %}{{page.meta_keywords}}{% else %}{{block.super}}{% endif %}
+  {% if page.meta_keywords %}{{ page.meta_keywords }}{% else %}{{ block.super }}{% endif %}
 {% endblock %}
 
 {% block meta_description %}
-    {% if page.meta_description %}{{page.meta_description}}{% else %}
-        {% with page.content|striptags|truncatewords:20 as desc  %}
-            {% if desc %}{{desc}}{% else %}{{block.super}}{% endif %}
-        {% endwith %}
-    {% endif %}
+  {% if page.meta_description %}{{ page.meta_description }}{% else %}
+    {% with page.content|striptags|truncatewords:20 as desc %}
+      {% if desc %}{{ desc }}{% else %}{{ block.super }}{% endif %}
+    {% endwith %}
+  {% endif %}
 {% endblock %}
 
 {% block title %}
-    {% if page.meta_title %}{{page.meta_title}}{% else %}
-        {% if page.title %}{{page.title}}{% else %}{{block.super}}{% endif %}
-    {% endif %}
+  {% if page.meta_title %}{{ page.meta_title }}{% else %}
+    {% if page.title %}{{ page.title }}{% else %}{{ block.super }}{% endif %}
+  {% endif %}
 {% endblock %}
 
 {% block content %}
-    <div class="container">
-        <article class="blog-post">
-            {% with flatpage.page as page %}
-                <h1 class="blog-post__title">{{page.title}}</h1>
-                <div class="blog-post__text">{{page.content|safe}}</div>
-            {% endwith %}
-            <hr>
-        </article>
-    </div>
+  <div class="container">
+    <article class="blog-post">
+      {% with flatpage.page as page %}
+        <h1 class="blog-post__title">{{ page.title }}</h1>
+        <div class="blog-post__text">{{ page.content|safe }}</div>
+      {% endwith %}
+      <hr>
+    </article>
+  </div>
 {% endblock %}
