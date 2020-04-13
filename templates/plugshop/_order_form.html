@@ -3,150 +3,172 @@
 {% load powerball_tags %}
 <form action="{% url 'plugshop-order-new' %}" method="post" class="cart__form">{% csrf_token %}
 
-    <section class="cart-element">
-        {% spaceless %}
-        <div class="cart-box">
-            <hr>
+  <section class="cart-element">
+    {% spaceless %}
+      <div class="cart-box">
+        <hr>
+      </div>
+      <div class="cart-box">
+        <div class="cart__form-inline">
+          <h3 class="cart__form-inline__el">Доставка</h3>
+          <select name="shipping_type" class="cart__form-select cart__form-inline__el" data-cart-type="shipping_type">
+            {% for st in form.fields.shipping_type.queryset.all %}
+              <option value="{{ st.id }}" data-cart-help="{{ st.help }}"
+                      data-cart-price="{{ st.price }}"
+                  {% if st.has_requirements %}
+                      data-cart-require="{% if st.require_address %}address{% endif %}{% if st.require_zip_code %},zip_code,city,void{% endif %}"
+                  {% endif %}
+                  {% if form.shipping_type.value|slugify == st.id|slugify %} selected{% endif %}>{{ st.name }}</option>
+            {% endfor %}
+          </select>
         </div>
-        <div class="cart-box">
-            <div class="cart__form-inline">
-                <h3 class="cart__form-inline__el">Доставка</h3>
-                <select name="shipping_type" class="cart__form-select cart__form-inline__el" data-cart-type="shipping_type">
-                {% for st in form.fields.shipping_type.queryset.all  %}
-                <option value="{{st.id}}" data-cart-help="{{st.help}}" 
-                     data-cart-price="{{st.price}}" 
-                {% if st.has_requirements %}
-                    data-cart-require="{% if st.require_address %}address{% endif %}{% if st.require_zip_code %},zip_code,city,void{% endif %}"
-                {% endif %}
-                {% if form.shipping_type.value|slugify == st.id|slugify %} selected{% endif %}>{{st.name}}</option>
-                {% endfor %}
-                </select>
-            </div>
-            <div class="cart__form-inline cart__submit-label">
-                <span>Итого, с  учётом доставки: </span>
-                <span data-cart-type="price_total">{{request.cart.price_total|plugshop_currency}} {{request.cart.price_total|choose_plural:"рубль,рубля,рублей"}}</span>
-            </div>
+        <div class="cart__form-inline cart__submit-label">
+          <span>Итого, с  учётом доставки: </span>
+          <span
+              data-cart-type="price_total">{{ request.cart.price_total|plugshop_currency }} {{ request.cart.price_total|choose_plural:"рубль,рубля,рублей" }}</span>
         </div>
-        
-        <div class="cart-box">
-            <hr>
-        </div>
-        
-        <div class="cart-box">
-            <strong class="cart__shipping-text">{% delivery_date %}</strong>
-            <div class="cart__shipping-text" data-cart-type="help">{{shipping_type.0.help}}</div>
-        </div>
-        
-        <div class="cart-box">
-            <dl class="cart__form-element">
-                <dt>
-                    <label class="form-label{% if form.name.errors %} form-error{% endif %}" for="order_name">Имя</label>
-                </dt>
-                <dd>
-                    <input type="text" name="name" class="form-text cart__form-text{% if form.name.errors %} form-error{% endif %}" id="order_name" value="{{form.name.value|default:""}}" placeholder="Иванов Иван">
-                </dd>
-                {% if form.name.errors %}
-                <dd>
-                    <ul class="form-error-list">
-                    {% for err in form.name.errors %}<li>{{err}}</li>{% endfor %}
-                    </ul>
-                </dd>
-                {% endif %}
-            </dl>
-            
-            <dl class="cart__form-element">
-                <dt>
-                    <label class="form-label{% if form.email.errors %} form-error{% endif %}" for="order_email">E-mail</label>
-                </dt>
-                <dd>
-                    <input type="text" name="email" class="form-text cart__form-text{% if form.email.errors %} form-error{% endif %}" id="order_email" value="{{form.email.value|default:""}}"  placeholder="your@email.ru">
-                </dd>
-                {% if form.name.errors %}
-                <dd>
-                    <ul class="form-error-list">
-                    {% for err in form.email.errors %}<li>{{err}}</li>{% endfor %}
-                    </ul>
-                </dd>
-                {% endif %}
-            </dl>
-            
-            <dl class="cart__form-element">
-                <dt>
-                    <label class="form-label{% if form.phone.errors %} form-error{% endif %}" for="order_phone">Телефон</label>
-                </dt>
-                <dd>
-                    <input type="text" name="phone" class="form-text cart__form-text{% if form.phone.errors %} form-error{% endif %}" id="order_phone" value="{{form.phone.value|default:""}}" placeholder="+7 (495) 123-45-67">
-                </dd>
-                {% if form.phone.errors %}
-                <dd>
-                    <ul class="form-error-list">
-                    {% for err in form.phone.errors %}<li>{{err}}</li>{% endfor %}
-                    </ul>
-                </dd>
-                {% endif %}
-            </dl>
-            <dl class="cart__form-element" data-cart-type="address" data-cart-optional>
-                <dt>
-                    <label class="form-label{% if form.address.errors %} form-error{% endif %}" for="order_address">Адрес доставки</label>
-                </dt>
-                <dd>
-                    <input type="text" name="address" class="form-text cart__form-text{% if form.address.errors %} form-error{% endif %}" id="order_address" value="{{form.address.value|default:""}}"  placeholder="ул. Тверская, д.13, кв. 1">
-                </dd>
-                {% if form.address.errors %}
-                <dd>
-                    <ul class="form-error-list">
-                    {% for err in form.address.errors %}<li>{{err}}</li>{% endfor %}
-                    </ul>
-                </dd>
-                {% endif %}
-            </dl>
-            <dl class="cart__form-element" data-cart-type="city" data-cart-optional>
-                <dt>
-                    <label class="form-label{% if form.city.errors %} form-error{% endif %}" for="order_city">Город</label>
-                </dt>
-                <dd>
-                    <input type="text" name="city" class="form-text cart__form-text{% if form.city.errors %} form-error{% endif %}" id="order_city" value="{{form.city.value|default:""}}" placeholder="Москва">
-                </dd>
-                {% if form.city.errors %}
-                <dd>
-                    <ul class="form-error-list">
-                    {% for err in form.city.errors %}<li>{{err}}</li>{% endfor %}
-                    </ul>
-                </dd>
-                {% endif %}
-            </dl>
-            
-            <dl class="cart__form-element" data-cart-type="zip_code" data-cart-optional>
-                <dt>
-                    <label class="form-label{% if form.zip_code.errors %} form-error{% endif %}" for="order_zip_code">Индекс</label>
-                </dt>
-                <dd>
-                    <input type="text" name="zip_code" class="form-text cart__form-text{% if form.zip_code.errors %} form-error{% endif %}" id="order_zip_code" value="{{form.zip_code.value|default:""}}" placeholder="123456">
-                </dd>
-                {% if form.zip_code.errors %}
-                <dd>
-                    <ul class="form-error-list">
-                    {% for err in form.zip_code.errors %}<li>{{err}}</li>{% endfor %}
-                    </ul>
-                </dd>
-                {% endif %}
-            </dl>
-        </div>
-        {% endspaceless %}
-    </section>
+      </div>
+
+      <div class="cart-box">
+        <hr>
+      </div>
+
+      <div class="cart-box">
+        <strong class="cart__shipping-text">{% delivery_date %}</strong>
+        <div class="cart__shipping-text" data-cart-type="help">{{ shipping_type.0.help }}</div>
+      </div>
+
+      <div class="cart-box">
+        <dl class="cart__form-element">
+          <dt>
+            <label class="form-label{% if form.name.errors %} form-error{% endif %}" for="order_name">Имя</label>
+          </dt>
+          <dd>
+            <input type="text" name="name"
+                   class="form-text cart__form-text{% if form.name.errors %} form-error{% endif %}" id="order_name"
+                   value="{{ form.name.value|default:"" }}" placeholder="Иванов Иван">
+          </dd>
+          {% if form.name.errors %}
+            <dd>
+              <ul class="form-error-list">
+                {% for err in form.name.errors %}
+                  <li>{{ err }}</li>{% endfor %}
+              </ul>
+            </dd>
+          {% endif %}
+        </dl>
+
+        <dl class="cart__form-element">
+          <dt>
+            <label class="form-label{% if form.email.errors %} form-error{% endif %}" for="order_email">E-mail</label>
+          </dt>
+          <dd>
+            <input type="text" name="email"
+                   class="form-text cart__form-text{% if form.email.errors %} form-error{% endif %}" id="order_email"
+                   value="{{ form.email.value|default:"" }}" placeholder="your@email.ru">
+          </dd>
+          {% if form.name.errors %}
+            <dd>
+              <ul class="form-error-list">
+                {% for err in form.email.errors %}
+                  <li>{{ err }}</li>{% endfor %}
+              </ul>
+            </dd>
+          {% endif %}
+        </dl>
+
+        <dl class="cart__form-element">
+          <dt>
+            <label class="form-label{% if form.phone.errors %} form-error{% endif %}" for="order_phone">Телефон</label>
+          </dt>
+          <dd>
+            <input type="text" name="phone"
+                   class="form-text cart__form-text{% if form.phone.errors %} form-error{% endif %}" id="order_phone"
+                   value="{{ form.phone.value|default:"" }}" placeholder="+7 (495) 123-45-67">
+          </dd>
+          {% if form.phone.errors %}
+            <dd>
+              <ul class="form-error-list">
+                {% for err in form.phone.errors %}
+                  <li>{{ err }}</li>{% endfor %}
+              </ul>
+            </dd>
+          {% endif %}
+        </dl>
+        <dl class="cart__form-element" data-cart-type="address" data-cart-optional>
+          <dt>
+            <label class="form-label{% if form.address.errors %} form-error{% endif %}" for="order_address">Адрес
+              доставки</label>
+          </dt>
+          <dd>
+            <input type="text" name="address"
+                   class="form-text cart__form-text{% if form.address.errors %} form-error{% endif %}"
+                   id="order_address" value="{{ form.address.value|default:"" }}"
+                   placeholder="ул. Тверская, д.13, кв. 1">
+          </dd>
+          {% if form.address.errors %}
+            <dd>
+              <ul class="form-error-list">
+                {% for err in form.address.errors %}
+                  <li>{{ err }}</li>{% endfor %}
+              </ul>
+            </dd>
+          {% endif %}
+        </dl>
+        <dl class="cart__form-element" data-cart-type="city" data-cart-optional>
+          <dt>
+            <label class="form-label{% if form.city.errors %} form-error{% endif %}" for="order_city">Город</label>
+          </dt>
+          <dd>
+            <input type="text" name="city"
+                   class="form-text cart__form-text{% if form.city.errors %} form-error{% endif %}" id="order_city"
+                   value="{{ form.city.value|default:"" }}" placeholder="Москва">
+          </dd>
+          {% if form.city.errors %}
+            <dd>
+              <ul class="form-error-list">
+                {% for err in form.city.errors %}
+                  <li>{{ err }}</li>{% endfor %}
+              </ul>
+            </dd>
+          {% endif %}
+        </dl>
+
+        <dl class="cart__form-element" data-cart-type="zip_code" data-cart-optional>
+          <dt>
+            <label class="form-label{% if form.zip_code.errors %} form-error{% endif %}"
+                   for="order_zip_code">Индекс</label>
+          </dt>
+          <dd>
+            <input type="text" name="zip_code"
+                   class="form-text cart__form-text{% if form.zip_code.errors %} form-error{% endif %}"
+                   id="order_zip_code" value="{{ form.zip_code.value|default:"" }}" placeholder="123456">
+          </dd>
+          {% if form.zip_code.errors %}
+            <dd>
+              <ul class="form-error-list">
+                {% for err in form.zip_code.errors %}
+                  <li>{{ err }}</li>{% endfor %}
+              </ul>
+            </dd>
+          {% endif %}
+        </dl>
+      </div>
+    {% endspaceless %}
+  </section>
 
 
-    <section class="cart-box">
-        <div class="cart__submit">
-            {% spaceless %}
-            <div class="button button-red">
-                <div class="button_l">
-                    <input class="button__submit" type="submit" value="Оформить заказ">
-                </div>
-                <div class="button_r"></div>
-            </div>
-            {% endspaceless %}
+  <section class="cart-box">
+    <div class="cart__submit">
+      {% spaceless %}
+        <div class="button button-red">
+          <div class="button_l">
+            <input class="button__submit" type="submit" value="Оформить заказ">
+          </div>
+          <div class="button_r"></div>
         </div>
-    </section>
-    
+      {% endspaceless %}
+    </div>
+  </section>
+
 </form>
