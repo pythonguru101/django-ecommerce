@@ -2,16 +2,16 @@
 {% load pytils_numeral %}
 
 {% spaceless %}
-    <div data-cart-type="cart" class="mount-back"{% if request.cart|length == 0 %} style="display: none"{% endif %}>
-        <div class="mount-back_l">Ваш заказ 
-            <span data-cart-type="goods_count">{{request.cart|length|get_plural:"товар,товара,товаров"}}</span>
-        </div>
-        <div class="mount-back_r{% if not cart_button %} mount-back_r_e{% endif %}">
-            {% if cart_button %}
-            <a href="{% url 'plugshop-cart' %}" class="button button-red">
-                <span class="button_l">Оформить заказ</span><span class="button_r"></span>
-            </a>
-            {% endif %}
-        </div>
+  <div data-cart-type="cart" class="mount-back"{% if request.cart|length == 0 %} style="display: none"{% endif %}>
+    <div class="mount-back_l">Ваш заказ
+      <span data-cart-type="goods_count">{{ request.cart|length|get_plural:"товар,товара,товаров" }}</span>
     </div>
+    <div class="mount-back_r{% if not cart_button %} mount-back_r_e{% endif %}">
+      {% if cart_button %}
+        <a href="{% url 'plugshop-cart' %}" class="button button-red">
+          <span class="button_l">Оформить заказ</span><span class="button_r"></span>
+        </a>
+      {% endif %}
+    </div>
+  </div>
 {% endspaceless %}
