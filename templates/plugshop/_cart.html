@@ -1,69 +1,73 @@
 {% load plugshop %}
 {% load pytils_numeral %}
 
-{% with request.cart as cart  %}
-<section class="container cart-element">
+{% with request.cart as cart %}
+  <section class="container cart-element">
     {% if cart|length %}
-    <div class="cart-box">
+      <div class="cart-box">
         {% spaceless %}
-        <h3>Ваш заказ</h3>
-        <hr>
-        <table class="cart__goods">
+          <h3>Ваш заказ</h3>
+          <hr>
+          <table class="cart__goods">
             <thead></thead>
             <tbody>
-                {% for item in cart %}
-                    {% with item.product as product %}
-                        <tr data-cart-type="product" data-cart-id="{{product.id}}">
-                            <td class="cart__goods__col1">
-                                <form action="{% url 'plugshop-cart' %}" method="post" data-cart-action="remove_product">
-                                    {% csrf_token %}
-                                    {% plugshop_action product "remove_product" %}
-                                    <div>
-                                        <input type="submit" value="" class="cancel-button" data-cart-type="button">
-                                    </div>
-                                </form>
-                            </td>
-                            <td class="cart__goods__col2">
-                                {% with product.get_cover as img %}
-                                    <img src="{{img.image_cart.url}}" width="{{img.image_cart.width}}" height="{{img.image_cart.height}}" alt="{{product.name}}">
-                                {% endwith %}
-                            </td>
-                            <td class="cart__goods__col3">
-                                <div class="cart__goods-name">
-                                    <a href="{{product.get_absolute_url }}">{{product.name}}</a>
-                                </div>
-                                <div class="cart__goods-type">
-                                    {{product.description|safe}}
-                                </div>
-                            </td>
-                            <td class="cart__goods__col4">
-                                <div class="cart__update">
-
-                                    <form action="{% url 'plugshop-cart' %}" class="cart__goods__form" method="post" data-cart-action="remove">
-                                        {% csrf_token %}
-                                        {% plugshop_action product "remove" 1 %}
-                                        <div>
-                                            <input type="submit" value="-" class="cart-button" data-cart-type="button">
-                                        </div>
-                                    </form>
-
-                                    <span class="cart__goods-qnt" data-cart-type="product_quantity">{{item.quantity}}</span>
-
-                                    <form action="{% url 'plugshop-cart' %}" class="cart__goods__form" method="post" data-cart-action="add">
-                                        {% csrf_token %}
-                                        {% plugshop_action product "add" 1 %}
-                                        <div>
-                                            <input type="submit" value="+" class="cart-button" data-cart-type="button">
-                                        </div>
-                                    </form>
-                                </div>
-                            </td>
-                            <td class="cart__goods__col5">
-                                <span data-cart-type="product_price">{{item.price_total|plugshop_currency}} {{item.price_total|choose_plural:"рубль,рубля,рублей"}}</span>
-                            </td>
-                        </tr>
+            {% for item in cart %}
+              {% with item.product as product %}
+                <tr data-cart-type="product" data-cart-id="{{ product.id }}">
+                  <td class="cart__goods__col1">
+                    <form action="{% url 'plugshop-cart' %}" method="post" data-cart-action="remove_product">
+                      {% csrf_token %}
+                      {% plugshop_action product "remove_product" %}
+                      <div>
+                        <input type="submit" value="" class="cancel-button" data-cart-type="button">
+                      </div>
+                    </form>
+                  </td>
+                  <td class="cart__goods__col2">
+                    {% with product.get_cover as img %}
+                      <img src="{{ img.image_cart.url }}" width="{{ img.image_cart.width }}"
+                           height="{{ img.image_cart.height }}" alt="{{ product.name }}">
                     {% endwith %}
-                {% endfor %}
+                  </td>
+                  <td class="cart__goods__col3">
+                    <div class="cart__goods-name">
+                      <a href="{{ product.get_absolute_url }}">{{ product.name }}</a>
+                    </div>
+                    <div class="cart__goods-type">
+                      {{ product.description|safe }}
+                    </div>
+                  </td>
+                  <td class="cart__goods__col4">
+                    <div class="cart__update">
+
+                      <form action="{% url 'plugshop-cart' %}" class="cart__goods__form" method="post"
+                            data-cart-action="remove">
+                        {% csrf_token %}
+                        {% plugshop_action product "remove" 1 %}
+                        <div>
+                          <input type="submit" value="-" class="cart-button" data-cart-type="button">
+                        </div>
+                      </form>
+
+                      <span class="cart__goods-qnt" data-cart-type="product_quantity">{{ item.quantity }}</span>
+
+                      <form action="{% url 'plugshop-cart' %}" class="cart__goods__form" method="post"
+                            data-cart-action="add">
+                        {% csrf_token %}
+                        {% plugshop_action product "add" 1 %}
+                        <div>
+                          <input type="submit" value="+" class="cart-button" data-cart-type="button">
+                        </div>
+                      </form>
+                    </div>
+                  </td>
+                  <td class="cart__goods__col5">
+                    <span
+                        data-cart-type="product_price">{{ item.price_total|plugshop_currency }} {{ item.price_total|choose_plural:"рубль,рубля,рублей" }}</span>
+                  </td>
+                </tr>
+              {% endwith %}
+            {% endfor %}
             </tbody>
             {# <tfoot> #}
             {#     <tr> #}
@@ -72,9 +76,9 @@
             {#         </td> #}
             {#     </tr> #}
             {# </tfoot> #}
-        </table>
+          </table>
         {% endspaceless %}
-    </div>
+      </div>
     {% endif %}
-</section>
+  </section>
 {% endwith %}
