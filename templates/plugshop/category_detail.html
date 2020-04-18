@@ -1,14 +1,14 @@
 {% extends 'plugshop/product_list.html' %}
 {% block content %}
-    <section class="container">
-        <div class="category">
-            <h1 class="category__header">{{ category.name }}</h1>
-            <div class="category__desc category__desc_s">
-                {{ category.description|safe }}
-            </div>
-        </div>
-    </section>
-    <section class="container">
-        {% block product_list %}{{ block.super }}{% endblock %}
-    </section>
+  <section class="container">
+    <div class="category">
+      <h1 class="category__header">{{ category.name }}</h1>
+      <div class="category__desc category__desc_s">
+        {{ category.description|safe }}
+      </div>
+    </div>
+  </section>
+  <section class="container">
+    {% block product_list %}{{ block.super }}{% endblock %}
+  </section>
 {% endblock %}
