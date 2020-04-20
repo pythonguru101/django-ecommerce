@@ -5,84 +5,89 @@
 
 {% block content %}
 
-<section class="container cart-element">
+  <section class="container cart-element">
     <h1>Спасибо за заказ</h1>
-    <h3>Номер вашего заказа <strong>{{order.number}}</strong>.</h3>
-    <h3>Стоимость заказа составит {{order.price_total|plugshop_currency}} {{order.price_total|choose_plural:"рубль,рубля,рублей"}}.</h3>
-    <h3>В ближайшее время с вами свяжется менеджер для подтверждения заказа.</h3> 
-    <h3>Вопросы? Изменение в заказе? Звоните: {{app.phone}}.</h3>
-</section>
+    <h3>Номер вашего заказа <strong>{{ order.number }}</strong>.</h3>
+    <h3>Стоимость заказа
+      составит {{ order.price_total|plugshop_currency }} {{ order.price_total|choose_plural:"рубль,рубля,рублей" }}.</h3>
+    <h3>В ближайшее время с вами свяжется менеджер для подтверждения заказа.</h3>
+    <h3>Вопросы? Изменение в заказе? Звоните: {{ app.phone }}.</h3>
+  </section>
 
 
-<section class="container cart-element">
-    <div class="product-box">        
-        <div class="cart-box">
-            <table class="cart__goods">
-                <thead></thead>
-                <tbody>
-                    {% for item in order.ordered_items.all %}
-                        {% with item.product as product %}
-                            <tr data-cart-type="product">
-                                <td class="cart__goods__col2">
-                                    {% with product.get_cover as img %}
-                                        <img src="{{img.image_cart.url}}" width="{{img.image_cart.width}}" height="{{img.image_cart.height}}" alt="{{product.name}}">
-                                    {% endwith %}
-                                </td>
-                                <td class="cart__goods__col3">
-                                    <div class="cart__goods-name">
-                                        <a href="{{product.get_absolute_url }}">{{product.name}}</a>
-                                    </div>
-                                    <div class="cart__goods-type">
-                                        {# short description#}
-                                    </div>
-                                </td>
-                                <td class="cart__goods__col4">{{product.price}} &times; {{item.quantity}}</td>
-                                <td class="cart__goods__col5">
-                                    {{item.price|plugshop_currency}} {{item.price|choose_plural:"рубль,рубля,рублей"}}
-                                </td>
-                            </tr>
-                            <tr data-cart-id="{{product.id}}">
-                                <td colspan="5"><hr></td>
-                            </tr>
-                        {% endwith %}
-                    {% endfor %}
-                </tbody>
-                <tfoot>
-                    <tr>
-                        <td colspan="4" class="cart__total">Итого: {{order.price_total|plugshop_currency}} {{order.price_total|choose_plural:"рубль,рубля,рублей"}}</td>
-                    </tr>
-                </tfoot>
-            </table>
-        </div>
+  <section class="container cart-element">
+    <div class="product-box">
+      <div class="cart-box">
+        <table class="cart__goods">
+          <thead></thead>
+          <tbody>
+          {% for item in order.ordered_items.all %}
+            {% with item.product as product %}
+              <tr data-cart-type="product">
+                <td class="cart__goods__col2">
+                  {% with product.get_cover as img %}
+                    <img src="{{ img.image_cart.url }}" width="{{ img.image_cart.width }}"
+                         height="{{ img.image_cart.height }}" alt="{{ product.name }}">
+                  {% endwith %}
+                </td>
+                <td class="cart__goods__col3">
+                  <div class="cart__goods-name">
+                    <a href="{{ product.get_absolute_url }}">{{ product.name }}</a>
+                  </div>
+                  <div class="cart__goods-type">
+                    {# short description#}
+                  </div>
+                </td>
+                <td class="cart__goods__col4">{{ product.price }} &times; {{ item.quantity }}</td>
+                <td class="cart__goods__col5">
+                  {{ item.price|plugshop_currency }} {{ item.price|choose_plural:"рубль,рубля,рублей" }}
+                </td>
+              </tr>
+              <tr data-cart-id="{{ product.id }}">
+                <td colspan="5">
+                  <hr>
+                </td>
+              </tr>
+            {% endwith %}
+          {% endfor %}
+          </tbody>
+          <tfoot>
+          <tr>
+            <td colspan="4" class="cart__total">
+              Итого: {{ order.price_total|plugshop_currency }} {{ order.price_total|choose_plural:"рубль,рубля,рублей" }}</td>
+          </tr>
+          </tfoot>
+        </table>
+      </div>
     </div>
     {% if not debug %}
-    <img src="http://pixel.afrek.ru/?goid={{app.afrek_id}}&amp;iid={{order.number}}" width="1" height="1">
+      <img src="http://pixel.afrek.ru/?goid={{ app.afrek_id }}&amp;iid={{ order.number }}" width="1" height="1">
     {% endif %}
-</section>
+  </section>
 {% endblock %}
 
 <script type="text/javascript">
     {% block google_analytics_inner %}
-    _gaq.push(['_addTrans',
-        '{{order.number}}',
-        'powerball.ru',
-        '{{order.price_without_shipping}}',
-        '0',
-        '{{order.shipping_type.price}}',
-        'Moscow',
-        'Moscow',
-        'Russia'
-      ]);
-      {% for item in order.ordered_items.select_related.all %}
-      _gaq.push(['_addItem',
-           '{{order.number}}',                  // order ID - necessary to associate item with transaction
-           '{{item.product.slug}}',             // SKU/code - required
-           '{{item.product.name}}',             // product name - necessary to associate revenue with product
-           '{{item.product.category.name}}',    // category or variation
-           '{{item.product.price}}',            // unit price - required
-           '{{item.quantity}}'                  // quantity - required
+        _gaq.push(['_addTrans',
+            '{{order.number}}',
+            'powerball.ru',
+            '{{order.price_without_shipping}}',
+            '0',
+            '{{order.shipping_type.price}}',
+            'Moscow',
+            'Moscow',
+            'Russia'
         ]);
-      {% endfor %}
-      _gaq.push(['_trackTrans']);
+        {% for item in order.ordered_items.select_related.all %}
+            _gaq.push(['_addItem',
+                '{{order.number}}',                  // order ID - necessary to associate item with transaction
+                '{{item.product.slug}}',             // SKU/code - required
+                '{{item.product.name}}',             // product name - necessary to associate revenue with product
+                '{{item.product.category.name}}',    // category or variation
+                '{{item.product.price}}',            // unit price - required
+                '{{item.quantity}}'                  // quantity - required
+            ]);
+        {% endfor %}
+        _gaq.push(['_trackTrans']);
     {% endblock %}
 </script>
