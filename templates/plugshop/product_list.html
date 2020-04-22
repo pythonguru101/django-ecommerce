@@ -5,47 +5,48 @@
 {% load pytils_numeral %}
 
 {% block content %}
-    <section class="container">
-        {% block product_list %}
-            {% spaceless %}
-            <ul class="product-list">
-                {% for p in products %}
-                    <li class="product-list__item product-box{% last_in_row forloop.counter 3 ' last' %}">
-                        <section class="product">
-                            <div class="product__data">
-                                <div class="product__pic">
-                                    {% with p.get_cover as img %}
-                                        <a href="{{p.get_absolute_url}}">
-                                            <img src="{{img.image_list.url}}" width="{{img.image_list.width}}" height="{{img.image_list.height}}" alt="{{p.name}}">
-                                            <div class="product__shadow"></div>
-                                        </a>
-                                    {% endwith %}
-                                </div>
-                                <h3 class="product__name">
-                                    <a href="{{ p.get_absolute_url }}">{{p.name}}</a>
-                                </h3>
-                                <div class="product__desc">
-                                    {{p.short_description|safe}}
-                                </div>
-                            </div>
-                            <div class="product__buttons">
-                                <form action="{% url 'plugshop-cart' %}" class="cart__goods__form" method="post">
-                                    {% csrf_token %}
-                                    {% plugshop_action p "add" %}
-                                    {% button 'submit' 'blue' p.label_buy data_cart_type="button" data_cart_id=p.id %}
-                                </form>
-                            </div>
-                        </section>
-                    </li>
-                {% endfor %}
-            </ul>
-            {% endspaceless %}
-        {% endblock %}
-    </section>
+  <section class="container">
+    {% block product_list %}
+      {% spaceless %}
+        <ul class="product-list">
+          {% for p in products %}
+            <li class="product-list__item product-box{% last_in_row forloop.counter 3 ' last' %}">
+              <section class="product">
+                <div class="product__data">
+                  <div class="product__pic">
+                    {% with p.get_cover as img %}
+                      <a href="{{ p.get_absolute_url }}">
+                        <img src="{{ img.image_list.url }}" width="{{ img.image_list.width }}"
+                             height="{{ img.image_list.height }}" alt="{{ p.name }}">
+                        <div class="product__shadow"></div>
+                      </a>
+                    {% endwith %}
+                  </div>
+                  <h3 class="product__name">
+                    <a href="{{ p.get_absolute_url }}">{{ p.name }}</a>
+                  </h3>
+                  <div class="product__desc">
+                    {{ p.short_description|safe }}
+                  </div>
+                </div>
+                <div class="product__buttons">
+                  <form action="{% url 'plugshop-cart' %}" class="cart__goods__form" method="post">
+                    {% csrf_token %}
+                    {% plugshop_action p "add" %}
+                    {% button 'submit' 'blue' p.label_buy data_cart_type="button" data_cart_id=p.id %}
+                  </form>
+                </div>
+              </section>
+            </li>
+          {% endfor %}
+        </ul>
+      {% endspaceless %}
+    {% endblock %}
+  </section>
 
-    {% if app.text_main_bot %}
-        <section class="container page-text">
-            {{app.text_main_bot|safe}}
-        </section>
-    {% endif %}
+  {% if app.text_main_bot %}
+    <section class="container page-text">
+      {{ app.text_main_bot|safe }}
+    </section>
+  {% endif %}
 {% endblock %}
