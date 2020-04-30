@@ -1,33 +1,33 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<section class="container ach-page">
+  <section class="container ach-page">
     <div class="product-box">
-        <div class="ach-head">
-            {% spaceless %}
-            <h1>Основные лиги</h1>
-            <div class="ach-buttons">
-                <a class="button button-blue" href="{% url 'achievements-record-new' %}">
-                    {% spaceless %}
-                    <div class="button_l">Добавить рекорд</div>
-                    <div class="button_r"></div>
-                    {% endspaceless %}
-                </a>
-            </div>
-            {% endspaceless %}
-        </div>
+      <div class="ach-head">
+        {% spaceless %}
+          <h1>Основные лиги</h1>
+          <div class="ach-buttons">
+            <a class="button button-blue" href="{% url 'achievements-record-new' %}">
+              {% spaceless %}
+                <div class="button_l">Добавить рекорд</div>
+                <div class="button_r"></div>
+              {% endspaceless %}
+            </a>
+          </div>
+        {% endspaceless %}
+      </div>
     </div>
     <div class="product-box">
-        <ul class="ach-categories">
+      <ul class="ach-categories">
         {% for category in categories %}
-            <li class="ach-categories__el">
-                <h3 class="ach-categories__el-name">
-                    <a href="{{category.get_absolute_url}}">{{category.name}}</a>
-                </h3>
-                <div class="ach-categories__el-desc">{{category.description}}</div>
-            </li>
+          <li class="ach-categories__el">
+            <h3 class="ach-categories__el-name">
+              <a href="{{ category.get_absolute_url }}">{{ category.name }}</a>
+            </h3>
+            <div class="ach-categories__el-desc">{{ category.description }}</div>
+          </li>
         {% endfor %}
-        </ul>
+      </ul>
     </div>
-</section>
+  </section>
 {% endblock content %}
