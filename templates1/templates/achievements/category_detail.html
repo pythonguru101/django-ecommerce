@@ -2,58 +2,60 @@
 {% load markup %}
 {% load pytils_dt %}
 {% block content %}
-<section class="container ach-page">
+  <section class="container ach-page">
     <div class="product-box">
-        {% spaceless %}
-        <h1>{{category.name}}</h1>
+      {% spaceless %}
+        <h1>{{ category.name }}</h1>
         <div class="ach-buttons">
-            <a class="button button-blue" href="{% url achievements-record-cat-new category.slug %}">
-                {% spaceless %}
-                <div class="button_l">Добавить рекорд</div>
-                <div class="button_r"></div>
-                {% endspaceless %}
-            </a>
+          <a class="button button-blue" href="{% url achievements-record-cat-new category.slug %}">
+            {% spaceless %}
+              <div class="button_l">Добавить рекорд</div>
+              <div class="button_r"></div>
+            {% endspaceless %}
+          </a>
         </div>
-        {% endspaceless %}
+      {% endspaceless %}
     </div>
     <div class="product-box_s">
-        <div class="ach-category__nav">
-            {% if records_prev %}
-                {% with year=records_prev|date:"Y" month=records_prev|date:"m"  %}
-                    <a href="{% url achievements-category-monthly slug=category.slug year=year month=month %}" class="ach-category__arrow_prev"></a>
-                {% endwith %}
-            {% endif %}
-            <h3 class="ach-category__label">Лучшее вращение Powerball за {{records_date_str}}</h3>
-            {% if records_next %}
-                {% with year=records_next|date:"Y" month=records_next|date:"m"  %}
-                    <a href="{% url achievements-category-monthly slug=category.slug year=year month=month %}" class="ach-category__arrow_next"></a>
-                {% endwith %}
-            {% endif %}
-        </div>
+      <div class="ach-category__nav">
+        {% if records_prev %}
+          {% with year=records_prev|date:"Y" month=records_prev|date:"m" %}
+            <a href="{% url achievements-category-monthly slug=category.slug year=year month=month %}"
+               class="ach-category__arrow_prev"></a>
+          {% endwith %}
+        {% endif %}
+        <h3 class="ach-category__label">Лучшее вращение Powerball за {{ records_date_str }}</h3>
+        {% if records_next %}
+          {% with year=records_next|date:"Y" month=records_next|date:"m" %}
+            <a href="{% url achievements-category-monthly slug=category.slug year=year month=month %}"
+               class="ach-category__arrow_next"></a>
+          {% endwith %}
+        {% endif %}
+      </div>
 
     </div>
-    
+
     <div class="product-box">
-        <table class="ach-category__table">
-            <tbody>
-                {% for record in records %}
-                    <tr>
-                        <td class="ach-category__table-num">{{forloop.counter}}</td>
-                        <td class="ach-category__table-value">
-                            <a href="{{record.get_absolute_url}}">{{record.value}}</a>
-                        </td>
-                        <td class="ach-category__table-name">
-                            {{record.user.first_name}} {{record.user.last_name}}
-                        </td>
-                        <td class="ach-category__table-city">
-                            <a href="#">{{record.user.profile.city.name}}</a>
-                        </td>
-                        <td class="ach-category__table-date">{{record.created_at|date:"d.m.Y"}}</td>
-                        <td class="ach-category__table-fav">-</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+      <table class="ach-category__table">
+        <tbody>
+        {% for record in records %}
+          <tr>
+            <td class="ach-category__table-num">{{ forloop.counter }}</td>
+            <td class="ach-category__table-value">
+              <a href="{{ record.get_absolute_url }}">{{ record.value }}</a>
+            </td>
+            <td class="ach-category__table-name">
+              {{ record.user.first_name }} {{ record.user.last_name }}
+            </td>
+            <td class="ach-category__table-city">
+              <a href="#">{{ record.user.profile.city.name }}</a>
+            </td>
+            <td class="ach-category__table-date">{{ record.created_at|date:"d.m.Y" }}</td>
+            <td class="ach-category__table-fav">-</td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
     </div>
-</section>
+  </section>
 {% endblock content %}
