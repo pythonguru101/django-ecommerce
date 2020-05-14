@@ -5,35 +5,35 @@
 {% load pytils_numeral %}
 
 {% block meta_keywords %}
-    {% if post.meta_keywords %}{{post.meta_keywords}}{% else %}{{block.super}}{% endif %}
+  {% if post.meta_keywords %}{{ post.meta_keywords }}{% else %}{{ block.super }}{% endif %}
 {% endblock %}
 
 {% block meta_description %}
-    {% if post.meta_description %}{{post.meta_description}}{% else %}
-        {% with post.text|cut:"#more"|markdown|striptags|truncatewords:20 as desc  %}
-            {% if desc %}{{desc}}{% else %}{{block.super}}{% endif %}
-        {% endwith %}
-    {% endif %}
+  {% if post.meta_description %}{{ post.meta_description }}{% else %}
+    {% with post.text|cut:"#more"|markdown|striptags|truncatewords:20 as desc %}
+      {% if desc %}{{ desc }}{% else %}{{ block.super }}{% endif %}
+    {% endwith %}
+  {% endif %}
 {% endblock %}
 
 {% block title %}
-    {% if post.meta_title %}{{post.meta_title}}{% else %}
-        {% if post.title %}{{post.title}}{% else %}{{block.super}}{% endif %}
-    {% endif %}
+  {% if post.meta_title %}{{ post.meta_title }}{% else %}
+    {% if post.title %}{{ post.title }}{% else %}{{ block.super }}{% endif %}
+  {% endif %}
 {% endblock %}
 
 {% block content %}
-    <div class="container">
-        {% spaceless %}
-        <article class="blog-post">
-            <div class="blog-post__date">{{post.publish_date|ru_strftime:"%d %B %Y, %A"}}</div>
-            <h1 class="blog-post__title">{{post.title}}</h1>
-            <div class="blog-post__text">{{post.text|cut:"#more"|markdown:"tables"|safe}}</div>
-        </article>
-        <aside class="blog-sidebar">
-            <div class="block-social"></div>
-        </aside>
-        <hr>
-        {% endspaceless %}
-    </div>
+  <div class="container">
+    {% spaceless %}
+      <article class="blog-post">
+        <div class="blog-post__date">{{ post.publish_date|ru_strftime:"%d %B %Y, %A" }}</div>
+        <h1 class="blog-post__title">{{ post.title }}</h1>
+        <div class="blog-post__text">{{ post.text|cut:"#more"|markdown:"tables"|safe }}</div>
+      </article>
+      <aside class="blog-sidebar">
+        <div class="block-social"></div>
+      </aside>
+      <hr>
+    {% endspaceless %}
+  </div>
 {% endblock %}
