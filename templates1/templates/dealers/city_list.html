@@ -2,34 +2,34 @@
 {% load markup %}
 
 {% block js_include %}
-<script src="http://api-maps.yandex.ru/2.0/?load=package.full&amp;lang=ru-RU"></script>
-<script>
-    (function($) {
-        $(function() {
-            new PowerBall.YandexMap('yandexmap');
-        })
-    }(jQuery));
-</script>
+  <script src="http://api-maps.yandex.ru/2.0/?load=package.full&amp;lang=ru-RU"></script>
+  <script>
+      (function ($) {
+          $(function () {
+              new PowerBall.YandexMap('yandexmap');
+          })
+      }(jQuery));
+  </script>
 {% endblock %}
 
 {% block substrate %}
-    <div class="page__substrate">
-        <div id="yandexmap" class="map"></div>
-    </div>
+  <div class="page__substrate">
+    <div id="yandexmap" class="map"></div>
+  </div>
 {% endblock %}
 
 {% block content %}
-<section class="container">
+  <section class="container">
     <div class="dealers__cities">
-        <ul class="dealers__city-list">
-            {% for city in city_list %}
-                <li class="dealers__city-list__item">
-                    <h3 class="dealers__city-name">
-                        <a href="{{city.get_absolute_url}}">{{city.name}}</a>
-                    </h3>
-                </li>
-            {% endfor %}
-        </ul>
+      <ul class="dealers__city-list">
+        {% for city in city_list %}
+          <li class="dealers__city-list__item">
+            <h3 class="dealers__city-name">
+              <a href="{{ city.get_absolute_url }}">{{ city.name }}</a>
+            </h3>
+          </li>
+        {% endfor %}
+      </ul>
     </div>
-</section>
+  </section>
 {% endblock content %}
