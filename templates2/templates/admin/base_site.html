@@ -3,8 +3,8 @@
 {% load i18n %}
 
 {% block extrastyle %}
-    {{ block.super }}
-    {% css_asset_tag "stylesheets/admin_extra.css" %}
+  {{ block.super }}
+  {% css_asset_tag "stylesheets/admin_extra.css" %}
 {% endblock %}
 
 {# {% block extrahead %} #}
@@ -14,7 +14,7 @@
 {% block title %}{{ title }} | {% trans 'Django site admin' %}{% endblock %}
 
 {% block branding %}
-<h1 id="site-name">{% trans 'Django administration' %}</h1>
+  <h1 id="site-name">{% trans 'Django administration' %}</h1>
 {% endblock %}
 
 {% block nav-global %}{% endblock %}
